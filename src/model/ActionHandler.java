@@ -47,10 +47,18 @@ public class ActionHandler {
 				}
 			case Feast:
 				p.hand.add(g.selectBuy(5));
+				g.inPlay.remove(a);
 			case Festival:
 				g.numOfActions += 2;
 				g.numOfBuys += 1;
 				g.currentWorth += 2;
+			case Labratory:
+				p.draw();
+				p.draw();
+				g.numOfActions += 1;
+			case Library:
+				while(p.hand.size()<7)
+					p.draw();
 			case Market:
 				g.numOfActions += 1;
 				g.numOfBuys += 1;
@@ -63,15 +71,21 @@ public class ActionHandler {
 					p.hand.add(g.silvers.removeCardAt(0));
 				if(temp.getClass().equals(Silver.class) || temp.getClass().equals(Gold.class))
 					p.hand.add(g.golds.removeCardAt(0));
-			case Village:
+			case Moat:
 				p.draw();
-				g.numOfActions += 2;
-			case Workshop:
-				temp = g.selectBuy(4);
-				p.hand.add(temp);
+				p.draw();
 			case Remodel:
 				temp = p.hand.removeCardAt((g.selectCard(p.hand))); //A really terrible way to get to select a card from hand
 				p.hand.add(g.selectBuy(temp.cost+2));
+			case Village:
+				p.draw();
+				g.numOfActions += 2;
+			case WoodCutter:
+				g.currentWorth += 2;
+				g.numOfBuys += 1;
+			case Workshop:
+				temp = g.selectBuy(4);
+				p.hand.add(temp);
 		}
 	}
 }

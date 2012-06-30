@@ -17,6 +17,7 @@ public class GameState {
 	Deck duchies;
 	Deck provinces;
 	Deck curses;
+	Deck inPlay;
 	ArrayList<Deck> buyOptions;
 	BufferedReader b;
 	int currentWorth;
@@ -41,6 +42,7 @@ public class GameState {
 		estates = new Deck(Estate.class,24-3*n);
 		//Need to initialize communityPiles;
 		communityPiles = new Deck[10];
+		inPlay = new Deck();
 	}
 	public void nextPlayer(){
 		if(currentPlayer != null)
@@ -52,6 +54,7 @@ public class GameState {
 		numOfBuys = 1;
 		actionPhase(p);
 		buyPhase(p);
+		p.discard.merge(inPlay);
 		p.newHand();
 	}
 	public void actionPhase(Player p){
@@ -60,6 +63,7 @@ public class GameState {
 			int i=selectCard(p.hand,CardType.Action);
 			if(i != -1){
 				ActionCard selected = (ActionCard)p.hand.getCardAt(i);
+				inPlay.add(selected);
 				ActionHandler.handleActionCard(this, p, selected);
 				numOfActions--;
 			}
