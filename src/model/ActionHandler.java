@@ -1,91 +1,91 @@
 package model;
 
 public class ActionHandler {
-	public static void handleActionCard(GameState g, Player p,ActionCard a){
+	public static void handleActionCard(GameState state, Player curPlayer,ActionCard card){
 		int i = 0;
 		Card temp = new BlankCard();
-		int handSize = p.hand.size();
+		int handSize = curPlayer.hand.size();
 		Player playerFocus;
-		switch (a.identity){
+		switch (card.identity){
 			case Adventurer:
 				while(i != 2){
-					temp = p.drawCheck();
+					temp = curPlayer.drawCheck();
 					if(temp.type.equals(CardType.Money)){
-						p.hand.add(temp);
+						curPlayer.hand.add(temp);
 						i++;
 					}
 					else{
-						p.discard.add(temp);
+						curPlayer.discard.add(temp);
 					}
 				}
 			case Cellar:
 				while(i != handSize && temp != null){
-					temp = p.hand.removeCardAt(g.selectCard(p.hand));
-					p.discard.add(temp);
+					temp = curPlayer.hand.removeCardAt(curPlayer.selectCard(curPlayer.hand, state));
+					curPlayer.discard.add(temp);
 					i++;
 				}
 				for(int j=0;j<i;j++){
-					p.draw();
+					curPlayer.draw();
 				}
 			case Chancellor:
 				System.out.println("Would you like to put your discard into your deck?");
-				if(g.yesOrNo()){
-					p.drawPile.mergeShuffle(p.discard);
+				if(state.yesOrNo()){
+					curPlayer.drawPile.mergeShuffle(curPlayer.discard);
 				}
-				g.currentWorth += 2;
+				state.currentWorth += 2;
 			case Chapel:
 				while(i != 4 && temp != null){
-					temp = p.hand.removeCardAt(g.selectCard(p.hand));
+					temp = curPlayer.hand.removeCardAt(curPlayer.selectCard(curPlayer.hand, state));
 					i++;
 				}
 			case CouncilRoom:
-				p.draw(4);
-				for(i=0;i<g.numOfPlayers-1;i++){
-					playerFocus = g.players.getFirst();
+				curPlayer.draw(4);
+				for(i=0;i<state.numOfPlayers-1;i++){
+					playerFocus = state.players.getFirst();
 					playerFocus.draw();
-					g.players.add(playerFocus);
+					state.players.add(playerFocus);
 				}
 			case Feast:
-				p.hand.add(g.selectBuy(5));
-				g.inPlay.remove(a);
+				curPlayer.hand.add(curPlayer.selectBuy(5, state));
+				state.inPlay.remove(card);
 			case Festival:
-				g.numOfActions += 2;
-				g.numOfBuys += 1;
-				g.currentWorth += 2;
+				state.numOfActions += 2;
+				state.numOfBuys += 1;
+				state.currentWorth += 2;
 			case Labratory:
-				p.draw();
-				p.draw();
-				g.numOfActions += 1;
+				curPlayer.draw();
+				curPlayer.draw();
+				state.numOfActions += 1;
 			case Library:
-				while(p.hand.size()<7)
-					p.draw();
+				while(curPlayer.hand.size()<7)
+					curPlayer.draw();
 			case Market:
-				g.numOfActions += 1;
-				g.numOfBuys += 1;
-				g.currentWorth += 1;
-				p.draw();
+				state.numOfActions += 1;
+				state.numOfBuys += 1;
+				state.currentWorth += 1;
+				curPlayer.draw();
 			case Mine: //Not technically Right
 				System.out.println("Select A Treasure for improving");
-				temp = p.hand.removeCardAt(g.selectCard(p.hand,CardType.Money));
+				temp = curPlayer.hand.removeCardAt(curPlayer.selectCard(curPlayer.hand,CardType.Money, state));
 				if(temp.getClass().equals(Copper.class))
-					p.hand.add(g.silvers.removeCardAt(0));
+					curPlayer.hand.add(state.silvers.removeCardAt(0));
 				if(temp.getClass().equals(Silver.class) || temp.getClass().equals(Gold.class))
-					p.hand.add(g.golds.removeCardAt(0));
+					curPlayer.hand.add(state.golds.removeCardAt(0));
 			case Moat:
-				p.draw();
-				p.draw();
+				curPlayer.draw();
+				curPlayer.draw();
 			case Remodel:
-				temp = p.hand.removeCardAt((g.selectCard(p.hand))); //A really terrible way to get to select a card from hand
-				p.hand.add(g.selectBuy(temp.cost+2));
+				temp = curPlayer.hand.removeCardAt((curPlayer.selectCard(curPlayer.hand, state))); //A really terrible way to get to select a card from hand
+				curPlayer.hand.add(curPlayer.selectBuy(temp.cost+2, state));
 			case Village:
-				p.draw();
-				g.numOfActions += 2;
+				curPlayer.draw();
+				state.numOfActions += 2;
 			case WoodCutter:
-				g.currentWorth += 2;
-				g.numOfBuys += 1;
+				state.currentWorth += 2;
+				state.numOfBuys += 1;
 			case Workshop:
-				temp = g.selectBuy(4);
-				p.hand.add(temp);
+				temp = curPlayer.selectBuy(4, state);
+				curPlayer.hand.add(temp);
 		}
 	}
 }

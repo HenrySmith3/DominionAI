@@ -1,0 +1,97 @@
+package model;
+
+import java.io.IOException;
+
+public class HumanPlayer extends Player {
+	public HumanPlayer(String s) throws InstantiationException, IllegalAccessException {
+		super(s);
+	}
+
+	@Override
+	public void playRound(GameState state) {
+		boolean finished = false;
+		if(hand.totalOfType(CardType.Action) != 0 && state.numOfActions != 0 && !finished){
+			int i=selectCard(hand,CardType.Action, state);
+			if(i != -1){
+				ActionCard selected = (ActionCard)hand.getCardAt(i);
+				state.inPlay.add(selected);
+				ActionHandler.handleActionCard(state, state.currentPlayer, selected);
+				state.numOfActions--;
+			}
+		}
+		
+		int currentWorth = 0;
+		currentWorth += hand.totalMoney();
+		Card purchaseChoice = new BlankCard();
+		while(currentWorth != 0 || purchaseChoice == null){
+			purchaseChoice = selectBuy(currentWorth, state);
+			if(purchaseChoice != null){
+				currentWorth -= purchaseChoice.cost;
+				discard.add(purchaseChoice);
+			}
+		}
+		
+	}
+	public Card selectBuy(int total, GameState state){
+		for(int i=0;i<state.buyOptions.size();i++){
+			System.out.println(i+") "+state.buyOptions.get(i).getClass().toString());
+		}
+		Card c = new BlankCard();
+		while(c.getClass() == BlankCard.class){
+			System.out.println("Please select an appropriate buy");
+			String line = "";
+			try {
+				line = state.b.readLine();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			int i = Integer.parseInt(line);
+			if(i == -1)
+				c = null;
+			else
+				c = state.buyOptions.get(i).getCardAt(0);
+			if(c.cost > total){
+				c = new BlankCard();
+				System.out.println("That card cost too much");
+			}
+		}
+		return c;
+	}
+	public int selectCard(Deck d, GameState state){
+		if(d.isEmpty())
+			return -1;
+		System.out.println("Enter -1 to not select a card");
+		d.printDeck();
+		int i = -1;
+		while(i == -1){
+			String line = "";
+			try {
+				line = state.b.readLine();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			int temp = Integer.parseInt(line);
+			if(temp < -1 || temp > d.size()){
+				System.out.println("Please pick another value");
+			}
+			else{
+				i = temp;
+			}
+		}
+		return i;
+	}
+	
+	public int selectCard(Deck d,CardType t, GameState state){
+		System.out.println("Select a card of type"+t);
+		int i = selectCard(d, state);
+		if(i == -1)
+			return i;
+		while(!d.getCardAt(i).type.equals(t)){
+			System.out.println("Not the right type. Select Again");
+		}
+		return i;
+	}
+		
+}

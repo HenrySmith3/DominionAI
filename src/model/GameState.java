@@ -28,7 +28,7 @@ public class GameState {
 		this.numOfPlayers = n;
 		b = new BufferedReader(new InputStreamReader(System.in));
 		for(int i=0;i<numOfPlayers;i++){
-			Player p = new Player(Integer.toString(i));
+			Player p = new HumanPlayer(Integer.toString(i));
 			p.newHand();
 			players.add(p);
 		}
@@ -45,19 +45,20 @@ public class GameState {
 		inPlay = new Deck();
 	}
 	public void nextPlayer(){
+		numOfActions = 1;
+		numOfBuys = 1;
 		if(currentPlayer != null)
 			players.add(currentPlayer);
 		currentPlayer = players.getFirst();
 	}
-	public void takeTurn(Player p){
-		numOfActions = 1;
-		numOfBuys = 1;
-		actionPhase(p);
-		buyPhase(p);
+	public void takeTurn(Player p, GameState state){
+		//actionPhase(p);
+		//buyPhase(p);
+		p.playRound(state);
 		p.discard.merge(inPlay);
 		p.newHand();
 	}
-	public void actionPhase(Player p){
+	/**public void actionPhase(Player p){
 		boolean finished = false;
 		if(p.hand.totalOfType(CardType.Action) != 0 && numOfActions != 0 && !finished){
 			int i=selectCard(p.hand,CardType.Action);
@@ -105,7 +106,7 @@ public class GameState {
 			}
 		}
 		return c;
-	}
+	}*/
 	public void setupBuyOptions(){
 		buyOptions = new ArrayList<Deck>();
 		buyOptions.add(estates);
@@ -119,7 +120,7 @@ public class GameState {
 		}		
 	}
 	//Not the best selector. Probably broken
-	public int selectCard(Deck d,CardType t){
+	/*public int selectCard(Deck d,CardType t){
 		System.out.println("Select a card of type"+t);
 		int i = selectCard(d);
 		if(i == -1)
@@ -152,7 +153,7 @@ public class GameState {
 			}
 		}
 		return i;
-	}
+	}*/
 	//A really lawlzy y/n asker
 	public boolean yesOrNo(){
 		System.out.println("Y/N");
@@ -190,7 +191,7 @@ public class GameState {
 	public void play() throws IOException{
 		while(!gameFinished()){
 			nextPlayer();
-			takeTurn(currentPlayer);
+			takeTurn(currentPlayer, this);
 		}
 		declareWinner();
 	}

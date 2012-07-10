@@ -1,6 +1,6 @@
 package model;
 
-public class Player {
+public abstract class Player {
 	public String name;
 	public Deck drawPile;
 	public Deck hand;
@@ -48,4 +48,8 @@ public class Player {
 			i++;
 		}
 	}
+	public abstract void playRound(GameState state);
+	public abstract Card selectBuy(int total, GameState state);
+	public abstract int selectCard(Deck d, GameState state);
+	public abstract int selectCard(Deck d,CardType t, GameState state);
 }
