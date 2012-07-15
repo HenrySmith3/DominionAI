@@ -24,4 +24,7 @@ public class ActionCard extends Card{
 	public Card clone() {
 		return new ActionCard(identity);
 	}
+	public String toString() {
+		return identity.toString();
+	}
 }

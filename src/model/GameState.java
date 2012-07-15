@@ -47,7 +47,6 @@ public class GameState {
 		provinces = new Deck(new Province(),12);
 		duchies = new Deck(new Duchy(),12);
 		estates = new Deck(new Estate(),24-3*numOfPlayers);
-		communityPiles = new ArrayList<Deck>();
 		setupBuyOptions();
 		inPlay = new Deck();
 	}
@@ -66,13 +65,7 @@ public class GameState {
 		p.newHand();
 	}
 	
-	public void setupCommunityPiles() {
-		Deck blanks = new Deck();
-		
-		for (int i = 0; i < 5; i++) {
-			blanks.add(new BlankCard());
-		}
-	}
+
 	/**public void actionPhase(Player p){
 		boolean finished = false;
 		if(p.hand.totalOfType(CardType.Action) != 0 && numOfActions != 0 && !finished){
@@ -211,5 +204,164 @@ public class GameState {
 			monitor.update(this);
 		}
 		declareWinner();
+	}
+	public void bought(Card card) {
+		for (Deck deck : buyOptions) {
+			if (deck.getCardAt(0).equals(card)) {
+				deck.removeCardAt(0);
+				break;
+			}
+		}
+		numOfBuys--;
+	}
+	public void setupCommunityPiles() {
+		communityPiles = new ArrayList<Deck>();
+		Deck temp;
+		
+		temp = new Deck();
+		for (int i = 0; i < 5; i++) {
+			temp.add(new ActionCard(ActionCardTypes.Adventurer));
+		}
+		communityPiles.add(temp);
+		
+		temp = new Deck();
+		for (int i = 0; i < 5; i++) {
+			temp.add(new ActionCard(ActionCardTypes.Bureaucrat));
+		}
+		communityPiles.add(temp);
+		
+		temp = new Deck();
+		for (int i = 0; i < 5; i++) {
+			temp.add(new ActionCard(ActionCardTypes.Cellar));
+		}
+		communityPiles.add(temp);
+		
+		temp = new Deck();
+		for (int i = 0; i < 5; i++) {
+			temp.add(new ActionCard(ActionCardTypes.Chancellor));
+		}
+		communityPiles.add(temp);
+		
+		temp = new Deck();
+		for (int i = 0; i < 5; i++) {
+			temp.add(new ActionCard(ActionCardTypes.Chapel));
+		}
+		communityPiles.add(temp);
+		
+		temp = new Deck();
+		for (int i = 0; i < 5; i++) {
+			temp.add(new ActionCard(ActionCardTypes.CouncilRoom));
+		}
+		communityPiles.add(temp);
+		
+		temp = new Deck();
+		for (int i = 0; i < 5; i++) {
+			temp.add(new ActionCard(ActionCardTypes.Feast));
+		}
+		communityPiles.add(temp);
+		
+		temp = new Deck();
+		for (int i = 0; i < 5; i++) {
+			temp.add(new ActionCard(ActionCardTypes.Festival));
+		}
+		communityPiles.add(temp);
+		
+		temp = new Deck();
+		for (int i = 0; i < 5; i++) {
+			temp.add(new ActionCard(ActionCardTypes.Labratory));
+		}
+		communityPiles.add(temp);
+		
+		temp = new Deck();
+		for (int i = 0; i < 5; i++) {
+			temp.add(new ActionCard(ActionCardTypes.Library));
+		}
+		communityPiles.add(temp);
+		
+		temp = new Deck();
+		for (int i = 0; i < 5; i++) {
+			temp.add(new ActionCard(ActionCardTypes.Market));
+		}
+		communityPiles.add(temp);
+		
+		temp = new Deck();
+		for (int i = 0; i < 5; i++) {
+			temp.add(new ActionCard(ActionCardTypes.Militia));
+		}
+		communityPiles.add(temp);
+		
+		temp = new Deck();
+		for (int i = 0; i < 5; i++) {
+			temp.add(new ActionCard(ActionCardTypes.Mine));
+		}
+		communityPiles.add(temp);
+		
+		temp = new Deck();
+		for (int i = 0; i < 5; i++) {
+			temp.add(new ActionCard(ActionCardTypes.Moat));
+		}
+		communityPiles.add(temp);
+		
+		temp = new Deck();
+		for (int i = 0; i < 5; i++) {
+			temp.add(new ActionCard(ActionCardTypes.Moneylender));
+		}
+		communityPiles.add(temp);
+		
+		temp = new Deck();
+		for (int i = 0; i < 5; i++) {
+			temp.add(new ActionCard(ActionCardTypes.Remodel));
+		}
+		communityPiles.add(temp);
+		
+		temp = new Deck();
+		for (int i = 0; i < 5; i++) {
+			temp.add(new ActionCard(ActionCardTypes.Smithy));
+		}
+		communityPiles.add(temp);
+		
+		temp = new Deck();
+		for (int i = 0; i < 5; i++) {
+			temp.add(new ActionCard(ActionCardTypes.Spy));
+		}
+		communityPiles.add(temp);
+		
+		temp = new Deck();
+		for (int i = 0; i < 5; i++) {
+			temp.add(new ActionCard(ActionCardTypes.Thief));
+		}
+		communityPiles.add(temp);
+		
+		temp = new Deck();
+		for (int i = 0; i < 5; i++) {
+			temp.add(new ActionCard(ActionCardTypes.ThroneRoom));
+		}
+		communityPiles.add(temp);
+		
+		temp = new Deck();
+		for (int i = 0; i < 5; i++) {
+			temp.add(new ActionCard(ActionCardTypes.Village));
+		}
+		communityPiles.add(temp);
+		
+		temp = new Deck();
+		for (int i = 0; i < 5; i++) {
+			temp.add(new ActionCard(ActionCardTypes.Witch));
+		}
+		communityPiles.add(temp);
+		
+		temp = new Deck();
+		for (int i = 0; i < 5; i++) {
+			temp.add(new ActionCard(ActionCardTypes.WoodCutter));
+		}
+		communityPiles.add(temp);
+		
+		temp = new Deck();
+		for (int i = 0; i < 5; i++) {
+			temp.add(new ActionCard(ActionCardTypes.Workshop));
+		}
+		communityPiles.add(temp);
+		
+		
 	}
 }

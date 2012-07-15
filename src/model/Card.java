@@ -6,7 +6,22 @@ public abstract class Card {
 	protected int victory;
 	protected CardType type;
 	public String toString(){
-		return this.getClass().toString();
+		return this.getClass().toString().substring(12);
 	}
 	public abstract Card clone();
+	public boolean equals(Card other) {
+		if (other.getClass().equals(this.getClass())) {
+			if (this.type == CardType.Action) {
+				if (((ActionCard)this).identity == ((ActionCard)other).identity) {
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 }

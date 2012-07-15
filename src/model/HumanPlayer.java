@@ -23,19 +23,22 @@ public class HumanPlayer extends Player {
 		int currentWorth = 0;
 		currentWorth += hand.totalMoney();
 		Card purchaseChoice = new BlankCard();
-		while(currentWorth != 0 || purchaseChoice == null){
+		while((currentWorth != 0 || purchaseChoice == null) && state.numOfBuys >= 1){
 			purchaseChoice = selectBuy(currentWorth, state);
 			if(purchaseChoice != null){
 				currentWorth -= purchaseChoice.cost;
 				discard.add(purchaseChoice);
+				state.bought(purchaseChoice);
+			} else {//if they didn't want to buy
+				break;
 			}
 		}
 		
 	}
 	public Card selectBuy(int total, GameState state){
 		for(int i=0;i<state.buyOptions.size();i++){
-			System.out.println(i+") "+state.buyOptions.get(i).getCardAt(0).getClass().toString()
-					+ "Cost: " + state.buyOptions.get(i).getCardAt(0).cost);
+			System.out.println(i+") "+state.buyOptions.get(i).getCardAt(0).toString()
+					+ " Cost: " + state.buyOptions.get(i).getCardAt(0).cost);
 		}
 		Card c = new BlankCard();
 		while(c.getClass() == BlankCard.class){
@@ -50,7 +53,7 @@ public class HumanPlayer extends Player {
 			}
 			int i = Integer.parseInt(line);
 			if(i == -1)
-				c = null;
+				return null;
 			else
 				c = state.buyOptions.get(i).getCardAt(0);
 			if(c.cost > total){
@@ -63,26 +66,24 @@ public class HumanPlayer extends Player {
 	public int selectCard(Deck d, GameState state){
 		if(d.isEmpty())
 			return -1;
-		System.out.println("Enter -1 to not select a card");
+		System.out.println("Enter -1 to not select a card, indexing starts at 0");
 		d.printDeck();
-		int i = -1;
-		while(i == -1){
-			String line = "";
-			try {
-				line = state.b.readLine();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			int temp = Integer.parseInt(line);
-			if(temp < -1 || temp > d.size()){
-				System.out.println("Please pick another value");
-			}
-			else{
-				i = temp;
-			}
+		String line = "";
+		try {
+			line = state.b.readLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return i;
+		int temp = Integer.parseInt(line);
+		if((temp <= -1 || temp > d.size()) && !(hand.getCardAt(temp) instanceof ActionCard)){
+			System.out.println("Please pick another value");
+			return selectCard(d, state);//I think recursive is more elegant than iterative.
+			//also, the old system was causing an infinite loop if you pick the wrong card type.
+		}
+		else{
+			return temp;
+		}
 	}
 	
 	public int selectCard(Deck d,CardType t, GameState state){
@@ -92,6 +93,7 @@ public class HumanPlayer extends Player {
 			return i;
 		while(!d.getCardAt(i).type.equals(t)){
 			System.out.println("Not the right type. Select Again");
+			return selectCard(d, t, state);
 		}
 		return i;
 	}
