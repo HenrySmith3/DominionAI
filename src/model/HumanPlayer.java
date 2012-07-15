@@ -76,7 +76,7 @@ public class HumanPlayer extends Player {
 			e.printStackTrace();
 		}
 		int temp = Integer.parseInt(line);
-		if((temp <= -1 || temp > d.size()) && !(hand.getCardAt(temp) instanceof ActionCard)){
+		if((temp <= -1 || temp >= d.size()) && !(hand.getCardAt(temp) instanceof ActionCard)){
 			System.out.println("Please pick another value");
 			return selectCard(d, state);//I think recursive is more elegant than iterative.
 			//also, the old system was causing an infinite loop if you pick the wrong card type.
