@@ -25,6 +25,8 @@ public class Deck {
 		return c;
 	}
 	public Card getCardAt(int i){
+		if(i<0 || i>theStack.size())
+			return new BlankCard();
 		return theStack.get(i);
 	}
 	public Card removeCardAt(int i){
