@@ -34,11 +34,13 @@ public class HumanPlayer extends Player {
 	}
 	public Card selectBuy(int total, GameState state){
 		for(int i=0;i<state.buyOptions.size();i++){
-			System.out.println(i+") "+state.buyOptions.get(i).getClass().toString());
+			System.out.println(i+") "+state.buyOptions.get(i).getCardAt(0).getClass().toString()
+					+ "Cost: " + state.buyOptions.get(i).getCardAt(0).cost);
 		}
 		Card c = new BlankCard();
 		while(c.getClass() == BlankCard.class){
-			System.out.println("Please select an appropriate buy");
+			System.out.println("Please select an appropriate buy, -1 to skip it.\nYou have " +
+								state.numOfBuys + " buys remaining, and " + total + " gold to spend.\n");
 			String line = "";
 			try {
 				line = state.b.readLine();

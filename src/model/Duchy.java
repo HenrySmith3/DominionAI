@@ -7,4 +7,7 @@ public class Duchy extends Card{
 		victory = 3;
 		type = CardType.Victory;
 	}
+	public Card clone() {
+		return new Duchy();
+	}
 }

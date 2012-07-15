@@ -9,7 +9,7 @@ import java.util.LinkedList;
 public class GameState {
 	LinkedList<Player> players = new LinkedList<Player>();
 	Player currentPlayer;
-	Deck[] communityPiles;
+	ArrayList<Deck> communityPiles;
 	Deck coppers;
 	Deck silvers;
 	Deck golds;
@@ -24,24 +24,31 @@ public class GameState {
 	int numOfActions;
 	int numOfBuys;
 	int numOfPlayers;
-	public GameState(int n) throws InstantiationException, IllegalAccessException{
-		this.numOfPlayers = n;
+	GameMonitor monitor;
+	public GameState(int computerPlayers, int humanPlayers) throws InstantiationException, IllegalAccessException{
+		monitor = new TextMonitor();
+		this.numOfPlayers = computerPlayers + humanPlayers;
 		b = new BufferedReader(new InputStreamReader(System.in));
-		for(int i=0;i<numOfPlayers;i++){
+		for(int i=0;i<computerPlayers;i++){
+			Player p = new HumanPlayer(Integer.toString(i));//CHANGE THIS TO COMPUTERPLAYER WHEN IT EXISTS
+			p.newHand();
+			players.add(p);
+		}
+		for(int i=0;i<humanPlayers;i++){
 			Player p = new HumanPlayer(Integer.toString(i));
 			p.newHand();
 			players.add(p);
 		}
 		currentWorth = 0;
-		coppers = new Deck(Copper.class,60-7*n);
-		silvers = new Deck(Silver.class,40);
-		golds = new Deck(Gold.class,30);
-		curses = new Deck(Curse.class,30);
-		provinces = new Deck(Province.class,12);
-		duchies = new Deck(Duchy.class,12);
-		estates = new Deck(Estate.class,24-3*n);
-		//Need to initialize communityPiles;
-		communityPiles = new Deck[10];
+		coppers = new Deck(new Copper(),60-7*numOfPlayers);
+		silvers = new Deck(new Silver(),40);
+		golds = new Deck(new Gold(),30);
+		curses = new Deck(new Curse(),30);
+		provinces = new Deck(new Province(),12);
+		duchies = new Deck(new Duchy(),12);
+		estates = new Deck(new Estate(),24-3*numOfPlayers);
+		communityPiles = new ArrayList<Deck>();
+		setupBuyOptions();
 		inPlay = new Deck();
 	}
 	public void nextPlayer(){
@@ -57,6 +64,14 @@ public class GameState {
 		p.playRound(state);
 		p.discard.merge(inPlay);
 		p.newHand();
+	}
+	
+	public void setupCommunityPiles() {
+		Deck blanks = new Deck();
+		
+		for (int i = 0; i < 5; i++) {
+			blanks.add(new BlankCard());
+		}
 	}
 	/**public void actionPhase(Player p){
 		boolean finished = false;
@@ -115,8 +130,9 @@ public class GameState {
 		buyOptions.add(coppers);
 		buyOptions.add(silvers);
 		buyOptions.add(golds);
-		for(int i=0;i<communityPiles.length;i++){
-			buyOptions.add(communityPiles[i]);
+		setupCommunityPiles();
+		for(int i=0;i<communityPiles.size();i++){
+			buyOptions.add(communityPiles.get(i));
 		}		
 	}
 	//Not the best selector. Probably broken
@@ -168,8 +184,8 @@ public class GameState {
 	}
 	public boolean gameFinished(){
 		int totalMissing = 0;
-		for(int i=0;i<communityPiles.length;i++){
-			if(communityPiles[i].isEmpty())
+		for(int i=0;i<communityPiles.size();i++){
+			if(communityPiles.get(i).isEmpty())
 				totalMissing++;
 		}
 		return provinces.isEmpty() || (totalMissing > 2);
@@ -192,6 +208,7 @@ public class GameState {
 		while(!gameFinished()){
 			nextPlayer();
 			takeTurn(currentPlayer, this);
+			monitor.update(this);
 		}
 		declareWinner();
 	}

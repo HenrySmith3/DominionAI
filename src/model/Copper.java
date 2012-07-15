@@ -7,4 +7,7 @@ public class Copper extends Card{
 		victory = 0;
 		type = CardType.Money;
 	}
+	public Card clone() {
+		return new Copper();
+	}
 }

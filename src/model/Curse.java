@@ -7,4 +7,7 @@ public class Curse extends Card{
 		victory = -1;
 		type = CardType.Victory;
 	}
+	public Card clone() {
+		return new Curse();
+	}
 }

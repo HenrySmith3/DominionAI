@@ -21,4 +21,7 @@ public class ActionCard extends Card{
 				cost = 2;
 		}
 	}
+	public Card clone() {
+		return new ActionCard(identity);
+	}
 }

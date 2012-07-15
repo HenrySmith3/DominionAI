@@ -8,4 +8,5 @@ public abstract class Card {
 	public String toString(){
 		return this.getClass().toString();
 	}
+	public abstract Card clone();
 }

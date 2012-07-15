@@ -10,7 +10,7 @@ public abstract class Player {
 		name = s;
 		victoryPoints = 3;
 		Card temp = new Copper();
-		drawPile = new Deck(temp.getClass(), 7);
+		drawPile = new Deck(temp, 7);
 		for(int i=0;i<3;i++)
 			drawPile.add(new Estate());
 		hand = new Deck();

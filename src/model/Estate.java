@@ -7,4 +7,7 @@ public class Estate extends Card{
 		victory = 1;
 		type = CardType.Victory;
 	}
+	public Card clone() {
+		return new Estate();
+	}
 }

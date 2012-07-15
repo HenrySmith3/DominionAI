@@ -9,10 +9,12 @@ public class Deck {
 	Deck(){
 		theStack = new ArrayList<Card>();
 	}
-	Deck(Class<? extends Card> class1,int n) throws InstantiationException, IllegalAccessException{
+	Deck(Card card,int n) throws InstantiationException, IllegalAccessException{
+		this();
 		int i=0;
 		while(i<n){
-			theStack.add(class1.newInstance());
+			theStack.add(card.clone());
+			i++;
 		}
 	}
 	public void add(Card c){
