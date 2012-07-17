@@ -3,7 +3,7 @@ package model;
 public class AttributeVector {
 	//values can be positive or negative, but the absolute value sums to 1.
 	public float percentageLeft;
-	public float minTurnsRequiredToEnd;
+	public float minTurnsRequiredToEnd;//high value means game is about to end
 	public float expMoneyInHand;//NOT the current amount of money. Expectation of money in next hand.
 	public float percentVictoryCards;//in your current deck.
 	public float actionCardPlayability;//higher means you can play all the action cards in your hand.

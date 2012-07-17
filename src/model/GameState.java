@@ -25,6 +25,7 @@ public class GameState {
 	int numOfBuys;
 	int numOfPlayers;
 	GameMonitor monitor;
+	int numTurns = 0;//each player's turn is a turn. When we've all gone once in a 4 player game, that's 4.
 	public GameState(int computerPlayers, int humanPlayers) throws InstantiationException, IllegalAccessException{
 		monitor = new TextMonitor();
 		this.numOfPlayers = computerPlayers + humanPlayers;
@@ -63,6 +64,7 @@ public class GameState {
 		p.playRound(state);
 		p.discard.merge(inPlay);
 		p.newHand();
+		++numTurns;
 	}
 	public void setupBuyOptions(){
 		buyOptions = new ArrayList<Deck>();
