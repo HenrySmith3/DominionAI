@@ -221,11 +221,11 @@ public class GameState {
 		}
 		communityPiles.add(temp);
 		
-		temp = new Deck();
+		/*temp = new Deck();
 		for (int i = 0; i < size; i++) {
 			temp.add(new ActionCard(ActionCardTypes.Library));
 		}
-		communityPiles.add(temp);
+		communityPiles.add(temp);*/
 		
 		temp = new Deck();
 		for (int i = 0; i < size; i++) {

@@ -10,7 +10,7 @@ public class ActionCard extends Card{
 			case Adventurer:
 				cost = 6;
 			case Bureaucrat: case CouncilRoom: case Festival: case Labratory:
-			case Library: case Market: case Mine: case Witch:
+			case Market: case Mine: case Witch://case Library: 
 				cost = 5;
 			case Feast: case Militia: case Moneylender: case Remodel:
 			case Smithy: case Spy: case Thief: case ThroneRoom: 

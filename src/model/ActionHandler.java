@@ -8,7 +8,7 @@ public class ActionHandler {
 		Player playerFocus;
 		switch (card.identity){
 			case Adventurer:
-				while(i != 2){
+				while(i != 2 && curPlayer.drawPile.size() != 0){
 					temp = curPlayer.drawCheck();
 					if(temp.type.equals(CardType.Money)){
 						curPlayer.hand.add(temp);
@@ -56,9 +56,9 @@ public class ActionHandler {
 				curPlayer.draw();
 				curPlayer.draw();
 				state.numOfActions += 1;
-			case Library:
+			/*case Library:
 				while(curPlayer.hand.size()<7)
-					curPlayer.draw();
+					curPlayer.draw();*/ //Isn't even correct.
 			case Market:
 				state.numOfActions += 1;
 				state.numOfBuys += 1;
