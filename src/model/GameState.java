@@ -25,6 +25,7 @@ public class GameState {
 	int numOfBuys;
 	int numOfPlayers;
 	GameMonitor monitor;
+	public int numTurns = 0;
 	public GameState(int computerPlayers, int humanPlayers) throws InstantiationException, IllegalAccessException{
 		monitor = new TextMonitor();
 		this.numOfPlayers = computerPlayers + humanPlayers;
@@ -63,6 +64,7 @@ public class GameState {
 		p.playRound(state);
 		p.discard.merge(inPlay);
 		p.newHand();
+		++numTurns;
 	}
 	public void setupBuyOptions(){
 		buyOptions = new ArrayList<Deck>();
