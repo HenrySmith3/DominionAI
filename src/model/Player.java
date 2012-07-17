@@ -48,8 +48,14 @@ public abstract class Player {
 			i++;
 		}
 	}
+	public Deck allCards(){
+		return new Deck(drawPile,hand,discard);
+	}
 	public abstract void playRound(GameState state);
 	public abstract Card selectBuy(int total, GameState state);
-	public abstract int selectCard(Deck d, GameState state);
-	public abstract int selectCard(Deck d,CardType t, GameState state);
+	public abstract Card selectCard(Deck d, GameState state);
+	public Card selectCard(Deck d,CardType t, GameState state){
+		Deck subD = d.makeSubDeck(t);
+		return selectCard(subD,state);
+	}
 }

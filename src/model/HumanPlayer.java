@@ -11,17 +11,18 @@ public class HumanPlayer extends Player {
 	public void playRound(GameState state) {
 		boolean finished = false;
 		if(hand.totalOfType(CardType.Action) != 0 && state.numOfActions != 0 && !finished){
-			int i=selectCard(hand,CardType.Action, state);
-			if(i != -1){
-				ActionCard selected = (ActionCard)hand.getCardAt(i);
-				state.inPlay.add(selected);
-				ActionHandler.handleActionCard(state, state.currentPlayer, selected);
+			ActionCard c = (ActionCard)selectCard(hand,CardType.Action, state);
+			if(c == null){
+				finished = true;
+			}
+			else{
+				state.inPlay.add(c);
+				ActionHandler.handleActionCard(state, state.currentPlayer, c);
 				state.numOfActions--;
 			}
 		}
-		
-		int currentWorth = 0;
-		currentWorth += hand.totalMoney();
+		//This worth value is wrong
+		int currentWorth = hand.totalMoney() + state.currentWorth;
 		Card purchaseChoice = new BlankCard();
 		while((currentWorth != 0 || purchaseChoice == null) && state.numOfBuys >= 1){
 			purchaseChoice = selectBuy(currentWorth, state);
@@ -63,9 +64,9 @@ public class HumanPlayer extends Player {
 		}
 		return c;
 	}
-	public int selectCard(Deck d, GameState state){
+	public Card selectCard(Deck d, GameState state){
 		if(d.isEmpty())
-			return -1;
+			return null;
 		System.out.println("Enter -1 to not select a card, indexing starts at 0");
 		d.printDeck();
 		String line = "";
@@ -82,20 +83,7 @@ public class HumanPlayer extends Player {
 			//also, the old system was causing an infinite loop if you pick the wrong card type.
 		}
 		else{
-			return temp;
+			return d.getCardAt(temp);
 		}
 	}
-	
-	public int selectCard(Deck d,CardType t, GameState state){
-		System.out.println("Select a card of type"+t);
-		int i = selectCard(d, state);
-		if(i == -1)
-			return i;
-		while(!d.getCardAt(i).type.equals(t)){
-			System.out.println("Not the right type. Select Again");
-			return selectCard(d, t, state);
-		}
-		return i;
-	}
-		
 }

@@ -9,19 +9,20 @@ public abstract class Card {
 		return this.getClass().toString().substring(12);
 	}
 	public abstract Card clone();
-	public boolean equals(Card other) {
-		if (other.getClass().equals(this.getClass())) {
-			if (this.type == CardType.Action) {
-				if (((ActionCard)this).identity == ((ActionCard)other).identity) {
+	public boolean equals(Card other){
+		if (other.getClass().equals(this.getClass())){
+			if (this.type == CardType.Action){
+				if (((ActionCard)this).identity == ((ActionCard)other).identity){
 					return true;
-				} else {
+				}
+				else{
 					return false;
 				}
-			} else {
+			}
+			else{
 				return true;
 			}
 		}
-		
 		return false;
 	}
 }

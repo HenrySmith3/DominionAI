@@ -17,6 +17,12 @@ public class Deck {
 			i++;
 		}
 	}
+	Deck(Deck... pieces){
+		this();
+		for(int i=0;i<pieces.length;i++){
+			merge(pieces[i]);
+		}
+	}
 	public void add(Card c){
 		theStack.add(c);
 	}
@@ -73,6 +79,13 @@ public class Deck {
 		}
 		return total;
 	}
+	public int totalVictory(){
+		int total = 0;
+		for(int i=0;i<theStack.size();i++){
+			total += theStack.get(i).victory;
+		}
+		return total;
+	}
 	public int totalOfType(CardType t){
 		int total = 0;
 		for(int i=0;i<theStack.size();i++){
@@ -80,6 +93,15 @@ public class Deck {
 				total++;
 		}
 		return total;
+	}
+	public Deck makeSubDeck(CardType t){
+		Deck r = new Deck();
+		for(int i=0;i<theStack.size();i++){
+			Card c = theStack.get(i);
+			if(c.type.equals(t))
+				r.add(c);
+		}
+		return r;
 	}
 	public String printDeck(){
 		String s = "";
