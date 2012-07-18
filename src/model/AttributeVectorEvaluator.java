@@ -5,24 +5,26 @@ import java.util.LinkedList;
 public class AttributeVectorEvaluator {
 	public static float EvaluateVector(AttributeVector vec, GameState state) {
 		float result = 0;
-		result += (vec.percentageLeft == 0) ? 0 : percentageLeft(state);
-		result += (vec.minTurnsRequiredToEnd == 0) ? 0 : minTurnsRequiredToEnd(state);
-		result += (vec.expMoneyInHand == 0) ? 0 : expMoneyInHand(state);
-		result += (vec.percentVictoryCards == 0) ? 0 : percentVictoryCards(state);
-		result += (vec.expNumBuys == 0) ? 0 : expNumBuys(state);
-		result += (vec.perEstate == 0) ? 0 : perEstate(state);
-		result += (vec.perDuchy == 0) ? 0 : perDuchy(state);
-		result += (vec.perProvince == 0) ? 0 : perProvince(state);
-		result += (vec.expValueNextCard == 0) ? 0 : expValueNextCard(state);
-		result += (vec.expValueDraw == 0) ? 0 : expValueDraw(state);
-		result += (vec.expValueDiscard == 0) ? 0 : expValueDiscard(state);
-		result += (vec.expValueHand == 0) ? 0 : expValueHand(state);
-		result += (vec.expValueEnemyDecks == 0) ? 0 : expValueEnemyDecks(state);
-		result += (vec.expValueCosting5 == 0) ? 0 : expValueCosting5(state);
-		result += (vec.cardsCosting5 == 0) ? 0 : cardsCosting5(state);
-		result += (vec.cursesRemaining == 0) ? 0 : cursesRemaining(state);
-		result += (vec.expEnemiesDrawingWitches == 0) ? 0 : expEnemiesDrawingWitches(state);
-		result += (vec.currentlyWinning == 0) ? 0 : currentlyWinning(state);
+		//we can't use == because we're comparing floats.
+		//if it's less than .001, it's zero.
+		result += (vec.percentageLeft < .001) ? 0 : percentageLeft(state);
+		result += (vec.minTurnsRequiredToEnd < .001) ? 0 : minTurnsRequiredToEnd(state);
+		result += (vec.expMoneyInHand < .001) ? 0 : expMoneyInHand(state);
+		result += (vec.percentVictoryCards < .001) ? 0 : percentVictoryCards(state);
+		result += (vec.expNumBuys < .001) ? 0 : expNumBuys(state);
+		result += (vec.perEstate < .001) ? 0 : perEstate(state);
+		result += (vec.perDuchy < .001) ? 0 : perDuchy(state);
+		result += (vec.perProvince < .001) ? 0 : perProvince(state);
+		result += (vec.expValueNextCard < .001) ? 0 : expValueNextCard(state);
+		result += (vec.expValueDraw < .001) ? 0 : expValueDraw(state);
+		result += (vec.expValueDiscard < .001) ? 0 : expValueDiscard(state);
+		result += (vec.expValueHand < .001) ? 0 : expValueHand(state);
+		result += (vec.expValueEnemyDecks < .001) ? 0 : expValueEnemyDecks(state);
+		result += (vec.expValueCosting5 < .001) ? 0 : expValueCosting5(state);
+		result += (vec.cardsCosting5 < .001) ? 0 : cardsCosting5(state);
+		result += (vec.cursesRemaining < .001) ? 0 : cursesRemaining(state);
+		result += (vec.expEnemiesDrawingWitches < .001) ? 0 : expEnemiesDrawingWitches(state);
+		result += (vec.currentlyWinning < .001) ? 0 : currentlyWinning(state);
 		
 		return result;
 		
