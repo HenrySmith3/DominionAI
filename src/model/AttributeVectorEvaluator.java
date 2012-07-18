@@ -1,7 +1,30 @@
 package model;
 
+import java.util.LinkedList;
+
 public class AttributeVectorEvaluator {
 	public static float EvaluateVector(AttributeVector vec, GameState state) {
+		float result = 0;
+		result += (vec.percentageLeft == 0) ? 0 : percentageLeft(state);
+		result += (vec.minTurnsRequiredToEnd == 0) ? 0 : minTurnsRequiredToEnd(state);
+		result += (vec.expMoneyInHand == 0) ? 0 : expMoneyInHand(state);
+		result += (vec.percentVictoryCards == 0) ? 0 : percentVictoryCards(state);
+		result += (vec.expNumBuys == 0) ? 0 : expNumBuys(state);
+		result += (vec.perEstate == 0) ? 0 : perEstate(state);
+		result += (vec.perDuchy == 0) ? 0 : perDuchy(state);
+		result += (vec.perProvince == 0) ? 0 : perProvince(state);
+		result += (vec.expValueNextCard == 0) ? 0 : expValueNextCard(state);
+		result += (vec.expValueDraw == 0) ? 0 : expValueDraw(state);
+		result += (vec.expValueDiscard == 0) ? 0 : expValueDiscard(state);
+		result += (vec.expValueHand == 0) ? 0 : expValueHand(state);
+		result += (vec.expValueEnemyDecks == 0) ? 0 : expValueEnemyDecks(state);
+		result += (vec.expValueCosting5 == 0) ? 0 : expValueCosting5(state);
+		result += (vec.cardsCosting5 == 0) ? 0 : cardsCosting5(state);
+		result += (vec.cursesRemaining == 0) ? 0 : cursesRemaining(state);
+		result += (vec.expEnemiesDrawingWitches == 0) ? 0 : expEnemiesDrawingWitches(state);
+		result += (vec.currentlyWinning == 0) ? 0 : currentlyWinning(state);
+		
+		return result;
 		
 	}
 	public static float percentageLeft(GameState state) {
@@ -46,8 +69,214 @@ public class AttributeVectorEvaluator {
    }
    public static float expMoneyInHand(GameState state) {
            Player player = state.currentPlayer;
-           Deck playerCards = new Deck(player.discard, player.drawPile, player.hand);
-           return playerCards.totalMoney()/5;
+           Deck playerCards = player.allCards();
+           return playerCards.totalMoney()/5f;
+   }
+   public static float percentVictoryCards(GameState state) {
+		   Player player = state.currentPlayer;
+	       Deck playerCards = player.allCards();
+	       int numVictory = 0;
+	       for (int i = 0; i < playerCards.size(); i++) {
+	    	   if (playerCards.getCardAt(i).type == CardType.Victory) {
+	    		   ++numVictory;
+	    	   }
+	       }
+	       return ((float)numVictory)/playerCards.size();
+   }
+   public static float expNumBuys(GameState state) {
+	   Player player = state.currentPlayer;
+       Deck playerCards = player.allCards();
+       int numBuys = 0;
+       for (int i = 0; i < playerCards.size(); i++) {
+    	   Card card = playerCards.getCardAt(i);
+    	   if (card instanceof ActionCard) {
+    		   ActionCard ac = (ActionCard) card;
+    		   if (ac.identity == ActionCardTypes.Market || 
+    		       ac.identity == ActionCardTypes.WoodCutter ||
+    		       ac.identity == ActionCardTypes.Festival) {
+    			   ++numBuys;
+    		   }
+    	   }
+       }
+       float response = ((float)numBuys*2)/playerCards.size();
+       if (response > 1) {
+    	   response = 1;
+       }
+       return (((float)numBuys)/playerCards.size());
+   }
+   public static float perEstate(GameState state) {
+	   Player player = state.currentPlayer;
+       Deck playerCards = player.allCards();
+       int numEstate = 0;
+       for (int i = 0; i < playerCards.size(); i++) {
+    	   if (playerCards.getCardAt(i) instanceof Estate) {
+    		   ++numEstate;
+    	   }
+       }
+       return ((float)numEstate)/playerCards.size();
+   }
+   public static float perDuchy(GameState state) {
+	   Player player = state.currentPlayer;
+       Deck playerCards = player.allCards();
+       int numDuchy = 0;
+       for (int i = 0; i < playerCards.size(); i++) {
+    	   if (playerCards.getCardAt(i) instanceof Estate) {
+    		   ++numDuchy;
+    	   }
+       }
+       return ((float)numDuchy)/playerCards.size();
+   }
+   public static float perProvince(GameState state) {
+	   Player player = state.currentPlayer;
+       Deck playerCards = player.allCards();
+       int numProvince = 0;
+       for (int i = 0; i < playerCards.size(); i++) {
+    	   if (playerCards.getCardAt(i) instanceof Estate) {
+    		   ++numProvince;
+    	   }
+       }
+       return ((float)numProvince)/playerCards.size();
+   }
+   public static float expValueNextCard(GameState state) {
+	   Player player = state.currentPlayer;
+       Deck playerCards = player.allCards();
+       int expValueTotal = 0;
+       for (int i = 0; i < playerCards.size(); i++) {
+    	   Card card = playerCards.getCardAt(i);
+    	   expValueTotal += AttributeVectorEvaluator.EvaluateVector(card.vector, state);
+       }
+       return ((float)expValueTotal)/playerCards.size();
+   }
+   public static float expValueDraw(GameState state) {
+	   Player player = state.currentPlayer;
+       Deck playerCards = player.drawPile;
+       int expValueTotal = 0;
+       for (int i = 0; i < playerCards.size(); i++) {
+    	   Card card = playerCards.getCardAt(i);
+    	   expValueTotal += AttributeVectorEvaluator.EvaluateVector(card.vector, state);
+       }
+       return ((float)expValueTotal)/playerCards.size();
+   }
+   public static float expValueDiscard(GameState state) {
+	   Player player = state.currentPlayer;
+       Deck playerCards = player.discard;
+       int expValueTotal = 0;
+       for (int i = 0; i < playerCards.size(); i++) {
+    	   Card card = playerCards.getCardAt(i);
+    	   expValueTotal += AttributeVectorEvaluator.EvaluateVector(card.vector, state);
+       }
+       return ((float)expValueTotal)/playerCards.size();
+   }
+   public static float expValueHand(GameState state) {
+	   Player player = state.currentPlayer;
+       Deck playerCards = player.hand;
+       int expValueTotal = 0;
+       for (int i = 0; i < playerCards.size(); i++) {
+    	   Card card = playerCards.getCardAt(i);
+    	   expValueTotal += AttributeVectorEvaluator.EvaluateVector(card.vector, state);
+       }
+       return ((float)expValueTotal)/playerCards.size();
+   }
+   public static float expValueEnemyDecks(GameState state) {
+	   LinkedList<Player> players = (LinkedList<Player>)state.players.clone();
+	   players.remove(state.currentPlayer);
+	   float expValueTotal = 0;
+	   for (Player player : players) {
+	       Deck playerCards = player.allCards();
+	       float playerExpValue = 0;
+	       for (int i = 0; i < playerCards.size(); i++) {
+	    	   Card card = playerCards.getCardAt(i);
+	    	   playerExpValue += AttributeVectorEvaluator.EvaluateVector(card.vector, state);
+	       }
+	       expValueTotal += playerExpValue/players.size();
+	   }
+	   return expValueTotal/players.size();
+   }
+   public static float expValueCosting5(GameState state) {
+       float maxExpValue = 0;
+       for (Deck deck : state.buyOptions) {
+    	   if (deck.size() == 0) {
+    		   continue;
+    	   }
+    	   Card card = deck.getCardAt(0);
+    	   float expValue = AttributeVectorEvaluator.EvaluateVector(card.vector, state);
+    	   if (expValue > maxExpValue) {
+    		   maxExpValue = expValue;
+    	   }
+       }
+       return maxExpValue;
+   }
+   public static float cardsCosting5(GameState state) {
+	   float cardsCosting5 = 0;
+       for (Deck deck : state.buyOptions) {
+    	   if (deck.size() == 0) {
+    		   continue;
+    	   }
+    	   Card card = deck.getCardAt(0);
+    	   if (card.cost == 5) {
+    		   ++cardsCosting5;
+    	   }
+       }
+       return cardsCosting5;
+   }
+   public static float cursesRemaining(GameState state) {
+	   float curses = 0;
+       for (Deck deck : state.buyOptions) {
+    	   if (deck.size() == 0) {
+    		   continue;
+    	   }
+    	   Card card = deck.getCardAt(0);
+    	   if (card instanceof Curse) {
+    		   return deck.size();
+    	   }
+       }
+       return curses;
+   }
+   public static float expEnemiesDrawingWitches(GameState state) {
+	   LinkedList<Player> players = (LinkedList<Player>)state.players.clone();
+	   players.remove(state.currentPlayer);
+	   float witches;
+	   float expWitches = 0;
+	   for (Player player : players) {
+		   witches = 0;
+	       Deck playerCards = player.allCards();
+	       float playerExpValue = 0;
+	       for (int i = 0; i < playerCards.size(); i++) {
+	    	   Card card = playerCards.getCardAt(i);
+	    	   if (card instanceof ActionCard) {
+	    		   ActionCard ac = (ActionCard)card;
+	    		   if (ac.identity == ActionCardTypes.Witch) {
+	    			   ++witches;
+	    		   }
+	    	   }
+	       }
+	       expWitches += playerExpValue*3/playerCards.size();//Three is an arbitrary boost.
+	   }
+	   float result = expWitches/players.size();
+	   return result;
+   }
+   //This is really lazy right now. 1 if you're winning, 0 otherwise.
+   public static float currentlyWinning(GameState state) {
+	   LinkedList<Player> players = (LinkedList<Player>)state.players.clone();
+	   players.remove(state.currentPlayer);
+	   Deck curPlayerCards = state.currentPlayer.allCards();
+	   int playerPoints = 0;
+	   for (int i = 0; i < curPlayerCards.size(); i++) { 
+		   Card card = curPlayerCards.getCardAt(i);
+		   playerPoints += card.victory;
+	   }
+	   for (Player player : players) {
+		   int enemyPoints = 0;
+	       Deck playerCards = player.allCards();
+	       for (int i = 0; i < playerCards.size(); i++) {
+	    	   Card card = playerCards.getCardAt(i);
+	    	   enemyPoints += card.victory;
+	       }
+	       if (playerPoints < enemyPoints) {
+	    	   return 0;
+	       }
+	   }
+	   return 1;//must be winning if we made it this far.
    }
 
 }

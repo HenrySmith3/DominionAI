@@ -5,6 +5,7 @@ public abstract class Card {
 	protected int value;
 	protected int victory;
 	protected CardType type;
+	protected AttributeVector vector;
 	public String toString(){
 		return this.getClass().toString().substring(12);
 	}
