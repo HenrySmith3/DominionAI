@@ -7,36 +7,36 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class GameState {
-	LinkedList<Player> players = new LinkedList<Player>();
-	Player currentPlayer;
-	ArrayList<Deck> communityPiles;
-	Deck coppers;
-	Deck silvers;
-	Deck golds;
-	Deck estates;
-	Deck duchies;
-	Deck provinces;
-	Deck curses;
-	Deck inPlay;
-	ArrayList<Deck> buyOptions;
-	BufferedReader b;
-	int currentWorth;
-	int numOfActions;
-	int numOfBuys;
-	int numOfPlayers;
+	public LinkedList<Player> players = new LinkedList<Player>();
+	public Player currentPlayer;
+	public ArrayList<Deck> communityPiles;
+	public Deck coppers;
+	public Deck silvers;
+	public Deck golds;
+	public Deck estates;
+	public Deck duchies;
+	public Deck provinces;
+	public Deck curses;
+	public Deck inPlay;
+	public ArrayList<Deck> buyOptions;
+	public BufferedReader b;
+	public int currentWorth;
+	public int numOfActions;
+	public int numOfBuys;
+	public int numOfPlayers;
 	GameMonitor monitor;
 	public int numTurns = 0;
-	public GameState(int computerPlayers, int humanPlayers) throws InstantiationException, IllegalAccessException{
+	public GameState(int computerPlayers, int humanPlayers,String actionDecksForGame) throws InstantiationException, IllegalAccessException{
 		monitor = new TextMonitor();
 		this.numOfPlayers = computerPlayers + humanPlayers;
 		b = new BufferedReader(new InputStreamReader(System.in));
 		for(int i=0;i<computerPlayers;i++){
-			Player p = new HumanPlayer(Integer.toString(i));//CHANGE THIS TO COMPUTERPLAYER WHEN IT EXISTS
+			Player p = new AIPlayer("Computer"+Integer.toString(i));//CHANGE THIS TO COMPUTERPLAYER WHEN IT EXISTS
 			p.newHand();
 			players.add(p);
 		}
 		for(int i=0;i<humanPlayers;i++){
-			Player p = new HumanPlayer(Integer.toString(i));
+			Player p = new HumanPlayer("Human"+Integer.toString(i));
 			p.newHand();
 			players.add(p);
 		}
@@ -48,6 +48,7 @@ public class GameState {
 		provinces = new Deck(new Province(),12);
 		duchies = new Deck(new Duchy(),12);
 		estates = new Deck(new Estate(),24-3*numOfPlayers);
+		setupCommunityPiles(actionDecksForGame);
 		setupBuyOptions();
 		inPlay = new Deck();
 	}
@@ -56,7 +57,7 @@ public class GameState {
 		numOfBuys = 1;
 		if(currentPlayer != null)
 			players.add(currentPlayer);
-		currentPlayer = players.getFirst();
+		currentPlayer = players.removeFirst();
 	}
 	public void takeTurn(Player p, GameState state){
 		//actionPhase(p);
@@ -74,47 +75,10 @@ public class GameState {
 		buyOptions.add(coppers);
 		buyOptions.add(silvers);
 		buyOptions.add(golds);
-		setupCommunityPiles();
 		for(int i=0;i<communityPiles.size();i++){
 			buyOptions.add(communityPiles.get(i));
 		}		
 	}
-	//Not the best selector. Probably broken
-	/*public int selectCard(Deck d,CardType t){
-		System.out.println("Select a card of type"+t);
-		int i = selectCard(d);
-		if(i == -1)
-			return i;
-		while(!d.getCardAt(i).type.equals(t)){
-			System.out.println("Not the right type. Select Again");
-		}
-		return i;
-	}
-	public int selectCard(Deck d){
-		if(d.isEmpty())
-			return -1;
-		System.out.println("Enter -1 to not select a card");
-		d.printDeck();
-		int i = -1;
-		while(i == -1){
-			String line = "";
-			try {
-				line = b.readLine();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			int temp = Integer.parseInt(line);
-			if(temp < -1 || temp > d.size()){
-				System.out.println("Please pick another value");
-			}
-			else{
-				i = temp;
-			}
-		}
-		return i;
-	}*/
-	//A really lawlzy y/n asker
 	public boolean yesOrNo(){
 		System.out.println("Y/N");
 		String line = "";
@@ -165,204 +129,12 @@ public class GameState {
 		}
 		numOfBuys--;
 	}
-	public void setupCommunityPiles() {
+	public void setupCommunityPiles(String s) throws InstantiationException, IllegalAccessException {
+		String[] decks = s.split(" ");
 		communityPiles = new ArrayList<Deck>();
-		Deck temp;	
-		temp = new Deck();
-		int size = 10;
-		for (int i = 0; i < size; i++) {
-			temp.add(new ActionCard(ActionCardTypes.Adventurer));
-		}
-		communityPiles.add(temp);
-		
-		temp = new Deck();
-		for (int i = 0; i < size; i++) {
-			temp.add(new ActionCard(ActionCardTypes.Bureaucrat));
-		}
-		communityPiles.add(temp);
-		
-		temp = new Deck();
-		for (int i = 0; i < size; i++) {
-			temp.add(new ActionCard(ActionCardTypes.Cellar));
-		}
-		communityPiles.add(temp);
-		
-		temp = new Deck();
-		for (int i = 0; i < size; i++) {
-			temp.add(new ActionCard(ActionCardTypes.Chancellor));
-		}
-		communityPiles.add(temp);
-		
-		temp = new Deck();
-		for (int i = 0; i < size; i++) {
-			temp.add(new ActionCard(ActionCardTypes.Chapel));
-		}
-		communityPiles.add(temp);
-		
-		temp = new Deck();
-		for (int i = 0; i < size; i++) {
-			temp.add(new ActionCard(ActionCardTypes.CouncilRoom));
-		}
-		communityPiles.add(temp);
-		
-		temp = new Deck();
-		for (int i = 0; i < size; i++) {
-			temp.add(new ActionCard(ActionCardTypes.Feast));
-		}
-		communityPiles.add(temp);
-		
-		temp = new Deck();
-		for (int i = 0; i < size; i++) {
-			temp.add(new ActionCard(ActionCardTypes.Festival));
-		}
-		communityPiles.add(temp);
-		
-		temp = new Deck();
-		for (int i = 0; i < size; i++) {
-			temp.add(new ActionCard(ActionCardTypes.Labratory));
-		}
-		communityPiles.add(temp);
-		
-		/*temp = new Deck();
-		for (int i = 0; i < size; i++) {
-			temp.add(new ActionCard(ActionCardTypes.Library));
-		}
-		communityPiles.add(temp);*/
-		
-		temp = new Deck();
-		for (int i = 0; i < size; i++) {
-			temp.add(new ActionCard(ActionCardTypes.Market));
-		}
-		communityPiles.add(temp);
-		
-		temp = new Deck();
-		for (int i = 0; i < size; i++) {
-			temp.add(new ActionCard(ActionCardTypes.Militia));
-		}
-		communityPiles.add(temp);
-		
-		temp = new Deck();
-		for (int i = 0; i < size; i++) {
-			temp.add(new ActionCard(ActionCardTypes.Mine));
-		}
-		communityPiles.add(temp);
-		
-		temp = new Deck();
-		for (int i = 0; i < size; i++) {
-			temp.add(new ActionCard(ActionCardTypes.Moat));
-		}
-		communityPiles.add(temp);
-		
-		temp = new Deck();
-		for (int i = 0; i < size; i++) {
-			temp.add(new ActionCard(ActionCardTypes.Moneylender));
-		}
-		communityPiles.add(temp);
-		
-		temp = new Deck();
-		for (int i = 0; i < size; i++) {
-			temp.add(new ActionCard(ActionCardTypes.Remodel));
-		}
-		communityPiles.add(temp);
-		
-		temp = new Deck();
-		for (int i = 0; i < size; i++) {
-			temp.add(new ActionCard(ActionCardTypes.Smithy));
-		}
-		communityPiles.add(temp);
-		
-		temp = new Deck();
-		for (int i = 0; i < size; i++) {
-			temp.add(new ActionCard(ActionCardTypes.Spy));
-		}
-		communityPiles.add(temp);
-		
-		temp = new Deck();
-		for (int i = 0; i < size; i++) {
-			temp.add(new ActionCard(ActionCardTypes.Thief));
-		}
-		communityPiles.add(temp);
-		
-		temp = new Deck();
-		for (int i = 0; i < size; i++) {
-			temp.add(new ActionCard(ActionCardTypes.ThroneRoom));
-		}
-		communityPiles.add(temp);
-		
-		temp = new Deck();
-		for (int i = 0; i < size; i++) {
-			temp.add(new ActionCard(ActionCardTypes.Village));
-		}
-		communityPiles.add(temp);
-		
-		temp = new Deck();
-		for (int i = 0; i < size; i++) {
-			temp.add(new ActionCard(ActionCardTypes.Witch));
-		}
-		communityPiles.add(temp);
-		
-		temp = new Deck();
-		for (int i = 0; i < size; i++) {
-			temp.add(new ActionCard(ActionCardTypes.WoodCutter));
-		}
-		communityPiles.add(temp);
-		
-		temp = new Deck();
-		for (int i = 0; i < size; i++) {
-			temp.add(new ActionCard(ActionCardTypes.Workshop));
-		}
-		communityPiles.add(temp);
-		
-		
-	}
-}
-
-/**public void actionPhase(Player p){
-	boolean finished = false;
-	if(p.hand.totalOfType(CardType.Action) != 0 && numOfActions != 0 && !finished){
-		int i=selectCard(p.hand,CardType.Action);
-		if(i != -1){
-			ActionCard selected = (ActionCard)p.hand.getCardAt(i);
-			inPlay.add(selected);
-			ActionHandler.handleActionCard(this, p, selected);
-			numOfActions--;
+		for(int i=0;i<decks.length;i++){
+			ActionCard myCard = new ActionCard(decks[i]);
+			communityPiles.add(new Deck(myCard,10));
 		}
 	}
 }
-public void buyPhase(Player p){
-	currentWorth += p.hand.totalMoney();
-	Card purchaseChoice = new BlankCard();
-	while(currentWorth != 0 || purchaseChoice == null){
-		purchaseChoice = selectBuy(currentWorth);
-		if(purchaseChoice != null){
-			currentWorth -= purchaseChoice.cost;
-			p.discard.add(purchaseChoice);
-		}
-	}
-}
-public Card selectBuy(int total){
-	for(int i=0;i<buyOptions.size();i++){
-		System.out.println(i+") "+buyOptions.get(i).getClass().toString());
-	}
-	Card c = new BlankCard();
-	while(c.getClass() == BlankCard.class){
-		System.out.println("Please select an appropriate buy");
-		String line = "";
-		try {
-			line = b.readLine();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		int i = Integer.parseInt(line);
-		if(i == -1)
-			c = null;
-		else
-			c = buyOptions.get(i).getCardAt(0);
-		if(c.cost > total){
-			c = new BlankCard();
-			System.out.println("That card cost too much");
-		}
-	}
-	return c;
-}*/

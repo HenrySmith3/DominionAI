@@ -1,89 +1,64 @@
 package model;
 
+import gui.CardSelectionFrame;
+import gui.GameStateFrame;
+
 import java.io.IOException;
 
 public class HumanPlayer extends Player {
+	public static Card selectedCardGUI = null;
 	public HumanPlayer(String s) throws InstantiationException, IllegalAccessException {
 		super(s);
 	}
 
 	@Override
 	public void playRound(GameState state) {
-		boolean finished = false;
-		if(hand.totalOfType(CardType.Action) != 0 && state.numOfActions != 0 && !finished){
-			ActionCard c = (ActionCard)selectCard(hand,CardType.Action, state);
-			if(c == null){
-				finished = true;
+		numActions = 1;
+		totalWorth = 0;
+		totalBuys = 1;
+		while(hand.totalOfType(CardType.Action) != 0 || selectedCardGUI == null){
+			selectCard(hand);
+			synchronized(this){
+				try{
+					wait();
+				}
+				catch (InterruptedException e){
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-			else{
-				state.inPlay.add(c);
-				ActionHandler.handleActionCard(state, state.currentPlayer, c);
-				state.numOfActions--;
+			if(!(selectedCardGUI instanceof BlankCard)){
+				ActionCard c = (ActionCard)selectedCardGUI;
+				handleAction(c,state);
 			}
 		}
+		selectedCardGUI = null;
 		//This worth value is wrong
-		int currentWorth = hand.totalMoney() + state.currentWorth;
-		Card purchaseChoice = new BlankCard();
-		while((currentWorth != 0 || purchaseChoice == null) && state.numOfBuys >= 1){
-			purchaseChoice = selectBuy(currentWorth, state);
-			if(purchaseChoice != null){
-				currentWorth -= purchaseChoice.cost;
-				discard.add(purchaseChoice);
-				state.bought(purchaseChoice);
-			} else {//if they didn't want to buy
-				break;
+		//I think this is fixed
+		totalWorth += hand.totalMoney();
+		while(totalBuys > 0){
+			selectBuy(state);
+			synchronized(this){
+				try{
+					wait();
+				}
+				catch (InterruptedException e){
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
-		
 	}
-	public Card selectBuy(int total, GameState state){
-		for(int i=0;i<state.buyOptions.size();i++){
-			System.out.println(i+") "+state.buyOptions.get(i).getCardAt(0).toString()
-					+ " Cost: " + state.buyOptions.get(i).getCardAt(0).cost);
-		}
-		Card c = new BlankCard();
-		while(c.getClass() == BlankCard.class){
-			System.out.println("Please select an appropriate buy, -1 to skip it.\nYou have " +
-								state.numOfBuys + " buys remaining, and " + total + " gold to spend.\n");
-			String line = "";
-			try {
-				line = state.b.readLine();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			int i = Integer.parseInt(line);
-			if(i == -1)
-				return null;
-			else
-				c = state.buyOptions.get(i).getCardAt(0);
-			if(c.cost > total){
-				c = new BlankCard();
-				System.out.println("That card cost too much");
-			}
-		}
-		return c;
+	//Trying to get a grasp on the heirarchy calls
+	public Card selectBuy(GameState state){
+		GameStateFrame gameStateFrame = new GameStateFrame(state);
+		return null;
 	}
-	public Card selectCard(Deck d, GameState state){
-		if(d.isEmpty())
-			return null;
-		System.out.println("Enter -1 to not select a card, indexing starts at 0");
-		d.printDeck();
-		String line = "";
-		try {
-			line = state.b.readLine();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		int temp = Integer.parseInt(line);
-		if((temp <= -1 || temp >= d.size()) && !(hand.getCardAt(temp) instanceof ActionCard)){
-			System.out.println("Please pick another value");
-			return selectCard(d, state);//I think recursive is more elegant than iterative.
-			//also, the old system was causing an infinite loop if you pick the wrong card type.
-		}
-		else{
-			return d.getCardAt(temp);
-		}
+
+	@Override
+	//This should be the real used method
+	public Card selectCard(Deck d) {
+		CardSelectionFrame guiPicker = new CardSelectionFrame(d, this);
+		return selectedCardGUI;
 	}
 }

@@ -11,7 +11,7 @@ public class Main {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException, IOException {
-		GameState state = new GameState(2,0);
+		GameState state = new GameState(0,2, "Mine Village Festival Labratory Feast Workshop WoodCutter Cellar CouncilRoom Market");
 		state.play();
 	}
 

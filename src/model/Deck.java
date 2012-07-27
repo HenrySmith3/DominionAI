@@ -17,7 +17,7 @@ public class Deck {
 			i++;
 		}
 	}
-	Deck(Deck... pieces){
+	Deck(Deck ... pieces){
 		this();
 		for(int i=0;i<pieces.length;i++){
 			merge(pieces[i]);

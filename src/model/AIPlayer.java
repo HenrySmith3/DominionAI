@@ -11,13 +11,19 @@ public class AIPlayer extends Player{
 		
 	}
 
-	public Card selectBuy(int total, GameState state) {
+	@Override
+	public Card selectBuy(GameState state) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public Card selectCard(Deck d, GameState state) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Card selectCard(Deck d, GameState state) {
+	@Override
+	public Card selectCard(Deck d) {
 		// TODO Auto-generated method stub
 		return null;
-	}	
+	}
 }

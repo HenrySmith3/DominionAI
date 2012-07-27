@@ -7,7 +7,11 @@ public abstract class Card {
 	protected CardType type;
 	protected AttributeVector vector;
 	public String toString(){
-		return this.getClass().toString().substring(12);
+		String s = getClass().toString();
+		while(s.contains(".")){
+			s = s.substring(s.indexOf('.')+1);
+		}
+		return s;
 	}
 	public abstract Card clone();
 	public boolean equals(Card other){
@@ -25,5 +29,8 @@ public abstract class Card {
 			}
 		}
 		return false;
+	}
+	public int getCost(){
+		return cost;
 	}
 }

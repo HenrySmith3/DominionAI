@@ -1,10 +1,14 @@
 package gui;
 
+import java.awt.event.ActionListener;
+
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
 
+import model.ActionCard;
 import model.Card;
 import model.Deck;
 
@@ -13,17 +17,30 @@ public class CardSelector extends JPanel {
 	/**
 	 * Create the panel.
 	 */
+	public JButton selectBtn;
 	public CardSelector(Card c) {
 		setLayout(null);
 		
 		JLabel CardImage = new JLabel("");
 		CardImage.setBounds(10, 11, 96, 150);
-		String imageLocation = "/Images/"+c.toString()+".png";
+		String imageLocation;
+		try{
+			imageLocation = "/Images/"+c.toString()+".png";
+		}
+		catch(NullPointerException npe){
+			imageLocation = "/Images/Back.png";
+		}
 		CardImage.setIcon(new ImageIcon(DeckPanel.class.getResource(imageLocation)));
 		add(CardImage);
-		
 		JButton btnSelect = new JButton("Select");
 		btnSelect.setBounds(15, 162, 89, 23);
+		try{
+			btnSelect.setEnabled(c.getClass().equals(ActionCard.class));
+		}
+		catch(NullPointerException npe){
+			btnSelect.setEnabled(false);
+		}
+		selectBtn = btnSelect;
 		add(btnSelect);
 	}
 	/**
@@ -37,6 +54,19 @@ public class CardSelector extends JPanel {
 		add(CardImage);
 		JButton btnSelect = new JButton("Select");
 		btnSelect.setBounds(15, 162, 89, 23);
+		btnSelect.setActionCommand("");
 		add(btnSelect);
+	}
+	public void changePanel(Card c,String message){
+		String imageLocation = "/Images/"+c.toString()+".png";
+		((JLabel)this.getComponent(1)).setIcon(new ImageIcon(DeckPanel.class.getResource(imageLocation)));
+		((JButton)this.getComponent(2)).setActionCommand(message);
+		addButtonListener(message);
+	}
+	
+	public void addButtonListener(String message){
+		selectBtn.setActionCommand(message);
+		ActionListener myFrame = (ActionListener) SwingUtilities.getWindowAncestor(this);
+		selectBtn.addActionListener(myFrame);
 	}
 }

@@ -1,7 +1,7 @@
 package model;
 
 public class BlankCard extends Card{
-	BlankCard(){
+	public BlankCard(){
 		
 	}
 	public Card clone() {
