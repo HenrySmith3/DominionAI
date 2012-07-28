@@ -5,6 +5,7 @@ public class AttributeVector {
 	public float percentageLeft = 0;
 	public float minTurnsRequiredToEnd = 0;
 	public float expMoneyInHand = 0;//NOT the current amount of money. Expectation of money in next hand.
+	public float invExpMoneyInHand = 0;//1-expMoneyInHand
 	public float percentVictoryCards = 0;//in your current deck.
 	//public float actionCardPlayability = 0;//higher means you can play all the action cards in your hand.
 	public float expNumBuys = 0;

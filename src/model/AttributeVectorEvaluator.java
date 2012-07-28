@@ -10,6 +10,7 @@ public class AttributeVectorEvaluator {
 		result += (vec.percentageLeft < .001) ? 0 : percentageLeft(state);
 		result += (vec.minTurnsRequiredToEnd < .001) ? 0 : minTurnsRequiredToEnd(state);
 		result += (vec.expMoneyInHand < .001) ? 0 : expMoneyInHand(state);
+		result += (vec.invExpMoneyInHand < .001) ? 0 : invExpMoneyInHand(state);
 		result += (vec.percentVictoryCards < .001) ? 0 : percentVictoryCards(state);
 		result += (vec.expNumBuys < .001) ? 0 : expNumBuys(state);
 		result += (vec.perEstate < .001) ? 0 : perEstate(state);
@@ -70,9 +71,12 @@ public class AttributeVectorEvaluator {
            return 0;
    }
    public static float expMoneyInHand(GameState state) {
-           Player player = state.currentPlayer;
-           Deck playerCards = player.allCards();
-           return playerCards.totalMoney()/5f;
+       Player player = state.currentPlayer;
+       Deck playerCards = player.allCards();
+       return playerCards.totalMoney()/5f;
+   }
+   public static float invExpMoneyInHand(GameState state) {
+       return 1- expMoneyInHand(state);
    }
    public static float percentVictoryCards(GameState state) {
 		   Player player = state.currentPlayer;
