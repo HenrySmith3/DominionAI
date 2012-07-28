@@ -10,7 +10,12 @@ public class DefaultPersonality extends Personality {
 	public void initializeVectors() {
 		//just one example. I'll do more of these later.
 		AttributeVector temp = new AttributeVector();
+		Card card = new ActionCard(ActionCardTypes.Adventurer.toString());
 		temp.invExpMoneyInHand = .7f;
 		temp.percentVictoryCards = .3f;		
+		vectors.put(card, temp);
+		
+		temp = new AttributeVector();
+		card = new ActionCard(ActionCardTypes.Bureaucrat.toString());
 	}
 }
