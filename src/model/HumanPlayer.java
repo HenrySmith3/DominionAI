@@ -17,7 +17,7 @@ public class HumanPlayer extends Player {
 		totalWorth = 0;
 		totalBuys = 1;
 		while(hand.totalOfType(CardType.Action) != 0 || selectedCardGUI == null){
-			selectCard(hand);
+			selectCard(hand, state);
 			synchronized(this){
 				try{
 					wait();
@@ -55,9 +55,8 @@ public class HumanPlayer extends Player {
 		return null;
 	}
 
-	@Override
 	//This should be the real used method
-	public Card selectCard(Deck d) {
+	public Card selectCard(Deck d, GameState state) {
 		CardSelectionFrame guiPicker = new CardSelectionFrame(d, this);
 		return selectedCardGUI;
 	}

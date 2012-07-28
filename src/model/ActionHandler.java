@@ -75,7 +75,7 @@ public class ActionHandler {
 				break;
 			case Mine: //Not technically Right
 				System.out.println("Select A Treasure for improving");
-				temp = curPlayer.hand.remove(curPlayer.selectCard(curPlayer.hand,CardType.Money));
+				temp = curPlayer.hand.remove(curPlayer.selectCard(curPlayer.hand,CardType.Money, state));
 				if(temp.getClass().equals(Copper.class))
 					curPlayer.hand.add(state.silvers.removeCardAt(0));
 				if(temp.getClass().equals(Silver.class) || temp.getClass().equals(Gold.class))
@@ -86,7 +86,7 @@ public class ActionHandler {
 				curPlayer.draw();
 				break;
 			case Remodel:
-				temp = curPlayer.hand.remove((curPlayer.selectCard(curPlayer.hand))); //A really terrible way to get to select a card from hand
+				temp = curPlayer.hand.remove((curPlayer.selectCard(curPlayer.hand, state))); //A really terrible way to get to select a card from hand
 				curPlayer.hand.add(curPlayer.selectBuy(temp.cost+2, state));
 				break;
 			case Village:

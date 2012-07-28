@@ -82,10 +82,10 @@ public abstract class Player {
 			numActions--;
 		}
 	}
-	public abstract Card selectCard(Deck d);
-	public Card selectCard(Deck d,CardType t){
+	public abstract Card selectCard(Deck d, GameState state);
+	public Card selectCard(Deck d,CardType t, GameState state){
 		Deck subD = d.makeSubDeck(t);
-		return selectCard(subD);
+		return selectCard(subD, state);
 	}
 	public String toString(){
 		return name;
