@@ -64,16 +64,14 @@ public abstract class Player {
 		totalBuys--;
 		return c;
 	}
+	
 	public void playRound(GameState state) {
 		numActions = 1;
 		totalWorth = 0;
 		totalBuys = 1;
 		selectedCardGUI = null;
 		while(!(selectedCardGUI instanceof BlankCard)){
-			Card c = selectCard(hand,CardType.Action);
-			ActionCard a = null;
-			if(c instanceof ActionCard)
-				a = (ActionCard)c;
+			Card c = selectCard(hand,CardType.Action, state);
 			if(!(c instanceof BlankCard)){
 				handleAction((ActionCard)c,state);
 			}
@@ -87,6 +85,7 @@ public abstract class Player {
 			c = selectBuy(state);
 		}
 	}
+	
 	public abstract Card selectBuy(GameState state);
 	
 	//Wrapper function to encorporate existing architecture
@@ -105,7 +104,7 @@ public abstract class Player {
 			numActions--;
 		}
 	}
-	public abstract Card selectCard(Deck d,CardType t);
+	public abstract Card selectCard(Deck d,CardType t, GameState state);
 	public String toString(){
 		return name;
 	}

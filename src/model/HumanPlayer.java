@@ -27,7 +27,7 @@ public class HumanPlayer extends Player {
 
 	@Override
 	//This should be the real used method
-	public Card selectCard(Deck d,CardType t) {
+	public Card selectCard(Deck d,CardType t, GameState state) {
 		CardSelectionFrame guiPicker = new CardSelectionFrame(d,this,t);
 		synchronized(this){
 			try{
