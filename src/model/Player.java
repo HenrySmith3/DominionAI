@@ -9,6 +9,7 @@ public abstract class Player {
 	public int totalBuys;
 	public int totalWorth;
 	public int numActions;
+	public static Card selectedCardGUI = null;
 	public Player(String s) throws InstantiationException, IllegalAccessException{
 		name = s;
 		victoryPoints = 3;
@@ -21,19 +22,18 @@ public abstract class Player {
 		discard = new Deck();
 	}
 	public void draw(){
-		hand.add(drawPile.draw());
+		hand.add(drawCheck());
 	}
 	public Card drawCheck(){
 		if(drawPile.isEmpty())
 			drawPile.mergeShuffle(discard);
+		if(drawPile.isEmpty())
+			return null;
 		return drawPile.removeCardAt(0);
 	}
 	public void draw(int n){
 		for(int i=0;i<n;i++){
-			if(drawPile.isEmpty()){
-				drawPile.mergeShuffle(discard);
-				hand.add(drawPile.draw());
-			}
+			draw();
 		}
 	}
 	public void discard(){
@@ -55,23 +55,46 @@ public abstract class Player {
 	public Deck allCards(){
 		return new Deck(drawPile,hand,discard);
 	}
-	public void buyCard(Deck d){
+	public Card buyCard(Deck d){
 		if(d.getCardAt(0).cost > totalWorth || d.isEmpty())
-			return;
+			return new BlankCard();
 		Card c = d.removeCardAt(0);
 		discard.add(c);
 		totalWorth -= c.cost;
 		totalBuys--;
+		return c;
 	}
-	public abstract void playRound(GameState state);
+	public void playRound(GameState state) {
+		numActions = 1;
+		totalWorth = 0;
+		totalBuys = 1;
+		selectedCardGUI = null;
+		while(!(selectedCardGUI instanceof BlankCard)){
+			Card c = selectCard(hand,CardType.Action);
+			ActionCard a = null;
+			if(c instanceof ActionCard)
+				a = (ActionCard)c;
+			if(!(c instanceof BlankCard)){
+				handleAction((ActionCard)c,state);
+			}
+		}
+		selectedCardGUI = null;
+		//This worth value is wrong
+		//I think this is fixed
+		totalWorth += hand.totalMoney();
+		Card c = null;
+		while(totalBuys > 0 && !(selectedCardGUI instanceof BlankCard)){
+			c = selectBuy(state);
+		}
+	}
 	public abstract Card selectBuy(GameState state);
 	
 	//Wrapper function to encorporate existing architecture
 	public Card selectBuy(int total,GameState state){
 		totalWorth = total;
-		selectBuy(state);
+		Card c = selectBuy(state);
 		totalWorth = 0;
-		return null;
+		return c;
 	}
 	//Handle an action from your hand
 	public void handleAction(ActionCard c,GameState g){
@@ -82,11 +105,7 @@ public abstract class Player {
 			numActions--;
 		}
 	}
-	public abstract Card selectCard(Deck d, GameState state);
-	public Card selectCard(Deck d,CardType t, GameState state){
-		Deck subD = d.makeSubDeck(t);
-		return selectCard(subD, state);
-	}
+	public abstract Card selectCard(Deck d,CardType t);
 	public String toString(){
 		return name;
 	}

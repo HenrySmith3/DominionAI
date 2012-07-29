@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+
+import model.BlankCard;
 import model.Deck;
 import model.GameState;
 import model.HumanPlayer;
@@ -160,7 +162,7 @@ public class GameStateFrame extends JFrame implements ActionListener{
 			return;
 		synchronized(game.currentPlayer){
 			if(message.contentEquals("EndTurn")){
-				game.currentPlayer.totalBuys = 0;
+				game.currentPlayer.selectedCardGUI = new BlankCard();
 				game.currentPlayer.notify();
 				dispose();
 				return;
@@ -193,7 +195,7 @@ public class GameStateFrame extends JFrame implements ActionListener{
 					e1.printStackTrace();
 				}
 			}
-			game.currentPlayer.buyCard(d);
+			game.currentPlayer.selectedCardGUI = game.currentPlayer.buyCard(d);
 			game.currentPlayer.notify();
 			dispose();
 		}

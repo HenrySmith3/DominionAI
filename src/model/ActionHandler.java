@@ -3,8 +3,7 @@ package model;
 public class ActionHandler {
 	public static void handleActionCard(GameState state, Player curPlayer,ActionCard card){
 		int i = 0;
-		Card temp = new BlankCard();
-		int handSize = curPlayer.hand.size();
+		Card temp = null;
 		Player playerFocus;
 		switch (card.identity){
 			case Adventurer:
@@ -20,14 +19,19 @@ public class ActionHandler {
 				}
 				break;
 			case Cellar:
-				while(curPlayer.hand.size() != 0 && temp != null){
-					temp = curPlayer.hand.remove(curPlayer.selectCard(curPlayer.hand, null));
-					curPlayer.discard.add(temp);
-					i++;
+				while(curPlayer.hand.size() != 0 && !(temp instanceof BlankCard)){
+					temp = curPlayer.selectCard(curPlayer.hand,null);
+					if(!(temp instanceof BlankCard)){
+						curPlayer.hand.remove(temp);
+						curPlayer.discard.add(temp);
+						i++;
+					}
 				}
 				for(int j=0;j<i;j++){
 					curPlayer.draw();
 				}
+				HumanPlayer.selectedCardGUI = card;//Shitty programming here
+				curPlayer.numActions += 1;
 				break;
 			case Chancellor:
 				System.out.println("Would you like to put your discard into your deck?");
@@ -41,11 +45,12 @@ public class ActionHandler {
 					temp = curPlayer.hand.remove(curPlayer.selectCard(curPlayer.hand, null));
 					i++;
 				}
+				HumanPlayer.selectedCardGUI = card;//Shitty programming here
 				break;
 			case CouncilRoom:
 				curPlayer.draw(4);
 				for(i=0;i<state.numOfPlayers-1;i++){
-					playerFocus = state.players.getFirst();
+					playerFocus = state.players.removeFirst();
 					playerFocus.draw();
 					state.players.add(playerFocus);
 				}
@@ -53,6 +58,7 @@ public class ActionHandler {
 			case Feast:
 				curPlayer.hand.add(curPlayer.selectBuy(5, state));
 				state.inPlay.remove(card);
+				curPlayer.totalBuys += 1; //To offset the free buy
 				break;
 			case Festival:
 				curPlayer.numActions += 2;
@@ -75,7 +81,7 @@ public class ActionHandler {
 				break;
 			case Mine: //Not technically Right
 				System.out.println("Select A Treasure for improving");
-				temp = curPlayer.hand.remove(curPlayer.selectCard(curPlayer.hand,CardType.Money, state));
+				temp = curPlayer.hand.remove(curPlayer.selectCard(curPlayer.hand,CardType.Money));
 				if(temp.getClass().equals(Copper.class))
 					curPlayer.hand.add(state.silvers.removeCardAt(0));
 				if(temp.getClass().equals(Silver.class) || temp.getClass().equals(Gold.class))
@@ -86,8 +92,9 @@ public class ActionHandler {
 				curPlayer.draw();
 				break;
 			case Remodel:
-				temp = curPlayer.hand.remove((curPlayer.selectCard(curPlayer.hand, state))); //A really terrible way to get to select a card from hand
+				temp = curPlayer.hand.remove((curPlayer.selectCard(curPlayer.hand,null))); //A really terrible way to get to select a card from hand
 				curPlayer.hand.add(curPlayer.selectBuy(temp.cost+2, state));
+				curPlayer.totalBuys += 1; //To offset the free buy
 				break;
 			case Village:
 				curPlayer.draw();
@@ -100,6 +107,7 @@ public class ActionHandler {
 			case Workshop:
 				temp = curPlayer.selectBuy(4, state);
 				curPlayer.hand.add(temp);
+				curPlayer.totalBuys += 1; //To offset the free buy
 				break;
 		}
 	}

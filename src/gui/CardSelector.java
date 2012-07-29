@@ -9,7 +9,9 @@ import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 
 import model.ActionCard;
+import model.ActionCardTypes;
 import model.Card;
+import model.CardType;
 import model.Deck;
 
 public class CardSelector extends JPanel {
@@ -18,7 +20,7 @@ public class CardSelector extends JPanel {
 	 * Create the panel.
 	 */
 	public JButton selectBtn;
-	public CardSelector(Card c) {
+	public CardSelector(Card c,CardType t) {
 		setLayout(null);
 		
 		JLabel CardImage = new JLabel("");
@@ -35,7 +37,7 @@ public class CardSelector extends JPanel {
 		JButton btnSelect = new JButton("Select");
 		btnSelect.setBounds(15, 162, 89, 23);
 		try{
-			btnSelect.setEnabled(c.getClass().equals(ActionCard.class));
+			btnSelect.setEnabled(t == null || c.getType().equals(t));
 		}
 		catch(NullPointerException npe){
 			btnSelect.setEnabled(false);

@@ -14,5 +14,4 @@ public class Main {
 		GameState state = new GameState(0,2, "Mine Village Festival Labratory Feast Workshop WoodCutter Cellar CouncilRoom Market");
 		state.play();
 	}
-
 }

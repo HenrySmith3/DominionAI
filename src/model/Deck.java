@@ -94,7 +94,18 @@ public class Deck {
 		}
 		return total;
 	}
+	public int totalOfCard(Class c){
+		int total = 0;
+		for(int i=0;i<theStack.size();i++){
+			Card e = theStack.get(i);
+			if(e.getClass() == c)
+				total++;
+		}
+		return total;
+	}
 	public Deck makeSubDeck(CardType t){
+		if(t == null)
+			return this;
 		Deck r = new Deck();
 		for(int i=0;i<theStack.size();i++){
 			Card c = theStack.get(i);

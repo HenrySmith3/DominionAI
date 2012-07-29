@@ -33,4 +33,7 @@ public abstract class Card {
 	public int getCost(){
 		return cost;
 	}
+	public CardType getType(){
+		return type;
+	}
 }

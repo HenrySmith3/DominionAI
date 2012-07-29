@@ -10,7 +10,6 @@ public class AttributeVectorEvaluator {
 		result += (vec.percentageLeft < .001) ? 0 : percentageLeft(state);
 		result += (vec.minTurnsRequiredToEnd < .001) ? 0 : minTurnsRequiredToEnd(state);
 		result += (vec.expMoneyInHand < .001) ? 0 : expMoneyInHand(state);
-		result += (vec.invExpMoneyInHand < .001) ? 0 : invExpMoneyInHand(state);
 		result += (vec.percentVictoryCards < .001) ? 0 : percentVictoryCards(state);
 		result += (vec.expNumBuys < .001) ? 0 : expNumBuys(state);
 		result += (vec.perEstate < .001) ? 0 : perEstate(state);
@@ -32,7 +31,7 @@ public class AttributeVectorEvaluator {
 	}
 	public static float percentageLeft(GameState state) {
            //perhaps make better later.
-           int estimatedTurns = 120;
+           int estimatedTurns = 20*state.numOfPlayers;
            int turns = state.numTurns;
            if (turns >= estimatedTurns) {
                    turns = estimatedTurns;
@@ -53,14 +52,15 @@ public class AttributeVectorEvaluator {
            for (Deck deck : state.communityPiles) {
                    if (deck.size() == 0) {
                            ++emptyDecks;
-                   } else if (deck.size() == 1) {
+                   }
+                   else if (deck.size() == 1) {
                            ++oneCardDecks;
                    }
-                   else if (deck.size() == 2) {
+                   else if (deck.size() == 2){
                            ++twoCardDecks;
                    }
            }
-           if (emptyDecks > 1 && oneCardDecks > 1) {
+           if (emptyDecks > 1 && oneCardDecks > 0) {
                    canEndInOne = true;
            }
            if ((emptyDecks >1 && twoCardDecks > 1) || (oneCardDecks>2)) {
@@ -71,12 +71,15 @@ public class AttributeVectorEvaluator {
            return 0;
    }
    public static float expMoneyInHand(GameState state) {
-       Player player = state.currentPlayer;
-       Deck playerCards = player.allCards();
-       return playerCards.totalMoney()/5f;
-   }
-   public static float invExpMoneyInHand(GameState state) {
-       return 1- expMoneyInHand(state);
+           Player player = state.currentPlayer;
+           Deck playerCards = player.allCards();
+           Deck moneyCards = playerCards.makeSubDeck(CardType.Money);
+           float percentageMoney = (moneyCards.size()*1f)/playerCards.size();
+           float percentageCopper = percentageMoney*moneyCards.totalOfCard(Copper.class);
+           float percentageSilver = percentageMoney*moneyCards.totalOfCard(Silver.class);
+           float percentageGold = percentageMoney*moneyCards.totalOfCard(Gold.class);
+           float expectedForDraw = percentageCopper + percentageSilver*2 + percentageGold*3; //Hard coded money values
+           return expectedForDraw*5; //Way overestimates your moneydraws, but is not a recursive call
    }
    public static float percentVictoryCards(GameState state) {
 		   Player player = state.currentPlayer;
@@ -261,28 +264,27 @@ public class AttributeVectorEvaluator {
 	   float result = expWitches/players.size();
 	   return result;
    }
-   //This is really lazy right now. 1 if you're winning, 0 otherwise.
+   //I'm going to change this. 0 means we're losing badly. 1 means we're winning well. 0.5 means a tie
    public static float currentlyWinning(GameState state) {
 	   LinkedList<Player> players = (LinkedList<Player>)state.players.clone();
 	   players.remove(state.currentPlayer);
 	   Deck curPlayerCards = state.currentPlayer.allCards();
 	   int playerPoints = 0;
+	   int inLeadBy = 120; //a negative value means we're behind the leader
 	   for (int i = 0; i < curPlayerCards.size(); i++) { 
 		   Card card = curPlayerCards.getCardAt(i);
 		   playerPoints += card.victory;
 	   }
 	   for (Player player : players) {
-		   int enemyPoints = 0;
-	       Deck playerCards = player.allCards();
-	       for (int i = 0; i < playerCards.size(); i++) {
-	    	   Card card = playerCards.getCardAt(i);
-	    	   enemyPoints += card.victory;
-	       }
-	       if (playerPoints < enemyPoints) {
-	    	   return 0;
-	       }
+		   int enemyPoints = player.allCards().totalVictory();
+	       inLeadBy = Math.min(inLeadBy, playerPoints - enemyPoints);
 	   }
-	   return 1;//must be winning if we made it this far.
+	   //If we're ahead, behind by 18 points, we're really secure in our spot
+	   //being 3 provinces ahead/behind is a really easy lead to keep, assuming a 20 turn game
+	   if(inLeadBy>18)
+		   inLeadBy = 18;
+	   if(inLeadBy<-18)
+		   inLeadBy = -18;
+	   return (float) (inLeadBy/36f + 0.5);
    }
-
 }

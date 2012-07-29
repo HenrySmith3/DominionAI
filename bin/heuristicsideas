@@ -1,0 +1,35 @@
+Need to figure out heuristic (or other AI technique).
+Estimated turns left. 
+Turns spent so far. (or maybe 1 - estimated turns left).
+Minimum turns required to end.
+Expected money from hand.
+Percentage of victory cards.
+Action cards unable to be played.
+Expected number of buys.
+Treasure cards in deck (of each type).
+Expected value of next x cards.
+Expected value of decks (discard, draw, hand)
+Expected value of enemy deck.
+UI? 
+Highest expected value of a card costing x (for feast and remodel)
+Total number of cards coting 5 left from community (for feast)
+Increased expected value of buy with 3 additional gold (Moneylender).
+Number of curses remaining to give.
+Relative number of witches other players are expected to draw.
+How am I doing relative to other player in terms of vicoty points (one for loser, one for winner)
+
+Might need a buy vector and a play vector.
+
+Think about what the cards vector should total to. One? Cost? Less valued Cost?
+
+Need more testing on the actual game itself. One of us should play through a full game.
+
+Writeup?
+Ask professor on Tuesday. 
+
+Things to work on (priority):
+UI hookup.
+AI heuristics system. (do the skeleton. like now).
+Logging (probably).
+Writeup.
+

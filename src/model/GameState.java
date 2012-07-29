@@ -31,7 +31,7 @@ public class GameState {
 		this.numOfPlayers = computerPlayers + humanPlayers;
 		b = new BufferedReader(new InputStreamReader(System.in));
 		for(int i=0;i<computerPlayers;i++){
-			Player p = new AIPlayer("Computer"+Integer.toString(i), new DefaultPersonality());//CHANGE THIS TO COMPUTERPLAYER WHEN IT EXISTS
+			Player p = new AIPlayer("Computer"+Integer.toString(i));//CHANGE THIS TO COMPUTERPLAYER WHEN IT EXISTS
 			p.newHand();
 			players.add(p);
 		}

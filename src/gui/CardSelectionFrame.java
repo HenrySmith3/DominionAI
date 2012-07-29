@@ -12,6 +12,7 @@ import javax.swing.JScrollPane;
 
 import model.BlankCard;
 import model.Card;
+import model.CardType;
 import model.Deck;
 import model.GameState;
 import model.HumanPlayer;
@@ -23,6 +24,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 public class CardSelectionFrame extends JFrame implements ActionListener{
 
@@ -36,7 +38,7 @@ public class CardSelectionFrame extends JFrame implements ActionListener{
 	public int viewIndex;
 	public Deck viewingDeck;
 	public HumanPlayer player;
-	public CardSelectionFrame(Deck d, HumanPlayer p) {
+	public CardSelectionFrame(Deck d, HumanPlayer p,CardType t) {
 		setResizable(false);
 		viewingDeck = d;
 		player = p;
@@ -52,9 +54,9 @@ public class CardSelectionFrame extends JFrame implements ActionListener{
 		
 		CardSelector cardSelector_0;
 		if(viewingDeck.size()<=viewIndex)
-			cardSelector_0 = new CardSelector((Card) null);
+			cardSelector_0 = new CardSelector((Card) null,t);
 		else
-			cardSelector_0 = new CardSelector(viewingDeck.getCardAt(viewIndex));
+			cardSelector_0 = new CardSelector(viewingDeck.getCardAt(viewIndex),t);
 		GridBagConstraints gbc_cardSelector_0 = new GridBagConstraints();
 		gbc_cardSelector_0.insets = new Insets(0, 0, 5, 5);
 		gbc_cardSelector_0.fill = GridBagConstraints.BOTH;
@@ -66,9 +68,9 @@ public class CardSelectionFrame extends JFrame implements ActionListener{
 		
 		CardSelector cardSelector_1;
 		if(viewingDeck.size()<=viewIndex)
-			cardSelector_1 = new CardSelector((Card) null);
+			cardSelector_1 = new CardSelector((Card) null,t);
 		else
-			cardSelector_1 = new CardSelector(viewingDeck.getCardAt(viewIndex));
+			cardSelector_1 = new CardSelector(viewingDeck.getCardAt(viewIndex),t);
 		GridBagConstraints gbc_cardSelector_1 = new GridBagConstraints();
 		gbc_cardSelector_1.insets = new Insets(0, 0, 5, 5);
 		gbc_cardSelector_1.fill = GridBagConstraints.BOTH;
@@ -79,9 +81,9 @@ public class CardSelectionFrame extends JFrame implements ActionListener{
 		
 		CardSelector cardSelector_2;
 		if(viewingDeck.size()<=viewIndex)
-			cardSelector_2 = new CardSelector((Card) null);
+			cardSelector_2 = new CardSelector((Card) null,t);
 		else
-			cardSelector_2 = new CardSelector(viewingDeck.getCardAt(viewIndex));
+			cardSelector_2 = new CardSelector(viewingDeck.getCardAt(viewIndex),t);
 		GridBagConstraints gbc_cardSelector_2 = new GridBagConstraints();
 		gbc_cardSelector_2.insets = new Insets(0, 0, 5, 5);
 		gbc_cardSelector_2.fill = GridBagConstraints.BOTH;
@@ -92,9 +94,9 @@ public class CardSelectionFrame extends JFrame implements ActionListener{
 		
 		CardSelector cardSelector_3;
 		if(viewingDeck.size()<=viewIndex)
-			cardSelector_3 = new CardSelector((Card) null);
+			cardSelector_3 = new CardSelector((Card) null,t);
 		else
-			cardSelector_3 = new CardSelector(viewingDeck.getCardAt(viewIndex));
+			cardSelector_3 = new CardSelector(viewingDeck.getCardAt(viewIndex),t);
 		GridBagConstraints gbc_cardSelector_3 = new GridBagConstraints();
 		gbc_cardSelector_3.insets = new Insets(0, 0, 5, 5);
 		gbc_cardSelector_3.fill = GridBagConstraints.BOTH;
@@ -105,9 +107,9 @@ public class CardSelectionFrame extends JFrame implements ActionListener{
 		
 		CardSelector cardSelector_4;
 		if(viewingDeck.size()<=viewIndex)
-			cardSelector_4 = new CardSelector((Card) null);
+			cardSelector_4 = new CardSelector((Card) null,t);
 		else
-			cardSelector_4 = new CardSelector(viewingDeck.getCardAt(viewIndex));
+			cardSelector_4 = new CardSelector(viewingDeck.getCardAt(viewIndex),t);
 		GridBagConstraints gbc_cardSelector_4 = new GridBagConstraints();
 		gbc_cardSelector_4.insets = new Insets(0, 0, 5, 5);
 		gbc_cardSelector_4.fill = GridBagConstraints.BOTH;
@@ -118,9 +120,9 @@ public class CardSelectionFrame extends JFrame implements ActionListener{
 		
 		CardSelector cardSelector_5;
 		if(viewingDeck.size()<=viewIndex)
-			cardSelector_5 = new CardSelector((Card) null);
+			cardSelector_5 = new CardSelector((Card) null,t);
 		else
-			cardSelector_5 = new CardSelector(viewingDeck.getCardAt(viewIndex));
+			cardSelector_5 = new CardSelector(viewingDeck.getCardAt(viewIndex),t);
 		GridBagConstraints gbc_cardSelector_5 = new GridBagConstraints();
 		gbc_cardSelector_5.insets = new Insets(0, 0, 5, 5);
 		gbc_cardSelector_5.fill = GridBagConstraints.BOTH;
@@ -131,9 +133,9 @@ public class CardSelectionFrame extends JFrame implements ActionListener{
 		
 		CardSelector cardSelector_6;
 		if(viewingDeck.size()<=viewIndex)
-			cardSelector_6 = new CardSelector((Card) null);
+			cardSelector_6 = new CardSelector((Card) null,t);
 		else
-			cardSelector_6 = new CardSelector(viewingDeck.getCardAt(viewIndex));
+			cardSelector_6 = new CardSelector(viewingDeck.getCardAt(viewIndex),t);
 		GridBagConstraints gbc_cardSelector_6 = new GridBagConstraints();
 		gbc_cardSelector_6.insets = new Insets(0, 0, 5, 5);
 		gbc_cardSelector_6.fill = GridBagConstraints.BOTH;
@@ -144,9 +146,9 @@ public class CardSelectionFrame extends JFrame implements ActionListener{
 		
 		CardSelector cardSelector_7;
 		if(viewingDeck.size()<=viewIndex)
-			cardSelector_7 = new CardSelector((Card) null);
+			cardSelector_7 = new CardSelector((Card) null,t);
 		else
-			cardSelector_7 = new CardSelector(viewingDeck.getCardAt(viewIndex));
+			cardSelector_7 = new CardSelector(viewingDeck.getCardAt(viewIndex),t);
 		
 		GridBagConstraints gbc_cardSelector_7 = new GridBagConstraints();
 		gbc_cardSelector_7.insets = new Insets(0, 0, 5, 5);
@@ -158,9 +160,9 @@ public class CardSelectionFrame extends JFrame implements ActionListener{
 		
 		CardSelector cardSelector_8;
 		if(viewingDeck.size()<=viewIndex)
-			cardSelector_8 = new CardSelector((Card) null);
+			cardSelector_8 = new CardSelector((Card) null,t);
 		else
-			cardSelector_8 = new CardSelector(viewingDeck.getCardAt(viewIndex));
+			cardSelector_8 = new CardSelector(viewingDeck.getCardAt(viewIndex),t);
 		
 		GridBagConstraints gbc_cardSelector_8 = new GridBagConstraints();
 		gbc_cardSelector_8.insets = new Insets(0, 0, 5, 5);
@@ -172,9 +174,9 @@ public class CardSelectionFrame extends JFrame implements ActionListener{
 		
 		CardSelector cardSelector_9;
 		if(viewingDeck.size()<=viewIndex)
-			cardSelector_9 = new CardSelector((Card) null);
+			cardSelector_9 = new CardSelector((Card) null,t);
 		else
-			cardSelector_9 = new CardSelector(viewingDeck.getCardAt(viewIndex));
+			cardSelector_9 = new CardSelector(viewingDeck.getCardAt(viewIndex),t);
 		
 		GridBagConstraints gbc_cardSelector_9 = new GridBagConstraints();
 		gbc_cardSelector_9.insets = new Insets(0, 0, 5, 5);
@@ -202,6 +204,20 @@ public class CardSelectionFrame extends JFrame implements ActionListener{
 		gbc_downButton.gridx = 5;
 		gbc_downButton.gridy = 1;
 		getContentPane().add(downButton, gbc_downButton);
+		
+		JLabel actionNumLabel = new JLabel("Actions:"+player.numActions);
+		GridBagConstraints gbc_actionNumLabel = new GridBagConstraints();
+		gbc_actionNumLabel.insets = new Insets(0, 0, 0, 5);
+		gbc_actionNumLabel.gridx = 3;
+		gbc_actionNumLabel.gridy = 2;
+		getContentPane().add(actionNumLabel, gbc_actionNumLabel);
+		
+		JLabel nameLabel = new JLabel("Player:"+player.name);
+		GridBagConstraints gbc_nameLabel = new GridBagConstraints();
+		gbc_nameLabel.insets = new Insets(0, 0, 0, 5);
+		gbc_nameLabel.gridx = 4;
+		gbc_nameLabel.gridy = 2;
+		getContentPane().add(nameLabel, gbc_nameLabel);
 		
 		JButton btnNoCard = new JButton("Skip");
 		GridBagConstraints gbc_btnNoCard = new GridBagConstraints();
@@ -254,7 +270,6 @@ public class CardSelectionFrame extends JFrame implements ActionListener{
 		}
 		synchronized(player){
 			if(e.getActionCommand() == "Skip"){
-				player.numActions = 0;
 				HumanPlayer.selectedCardGUI = new BlankCard();
 				player.notify();
 				dispose();
