@@ -56,7 +56,7 @@ public class ActionHandler {
 				}
 				break;
 			case Feast:
-				curPlayer.hand.add(curPlayer.selectBuy(5, state));
+				curPlayer.discard.add(curPlayer.selectBuy(5, state));
 				state.inPlay.remove(card);
 				curPlayer.totalBuys += 1; //To offset the free buy
 				break;

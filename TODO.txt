@@ -1,5 +1,12 @@
+TODO:
+Update write-up.
 AI players buy a province, even when they don't have enough gold.
-Player's hand no longer appears. 
+Create additional personalities. 
+Test!
+Need special action for Mine, Chapel, Cellar, etc.
+Some balancing for the attribute evaluator. They really, really like feast.
+
+NOTES:
 Merge didn't make copies, it would empty a deck. There's not merge and mergeCopy in deck. This probably caused other bugs.
 All attributes assume that the currentPlayer is the one it is evaluating it for. Is that right?
-Update write-up.
+Are we using inPlay? Is it even correct?
