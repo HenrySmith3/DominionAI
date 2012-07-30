@@ -29,12 +29,12 @@ public class AIPlayer extends Player{
 
 	@Override
 	public Card selectBuy(GameState state) {
-		//TODO fix so that it buys the most expensive card possible.
+		//TODO extra protection against buuying copper.
 		float bestValue = 0;
 		Card bestCard = new BlankCard();
 		int costAtLeast = totalWorth;
 		Deck canBuy;
-		while (costAtLeast >= 2) {
+		while (costAtLeast >= 0) {
 			canBuy = new Deck();
 			for (Deck deck : state.buyOptions) {
 				if (deck.getCardAt(0).cost > costAtLeast) {
