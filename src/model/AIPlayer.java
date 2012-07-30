@@ -22,14 +22,13 @@ public class AIPlayer extends Player{
 		//I think this is fixed
 		totalWorth += hand.totalMoney();
 		while(totalBuys > 0){
-			totalBuys--;
-			buy(selectBuy(state), state);
+			buyCard(selectBuy(state), state);
 		}
 	}
 
 	@Override
 	public Card selectBuy(GameState state) {
-		//TODO extra protection against buuying copper.
+		//TODO extra protection against buying copper.
 		float bestValue = 0;
 		Card bestCard = new BlankCard();
 		int costAtLeast = totalWorth;
@@ -37,7 +36,7 @@ public class AIPlayer extends Player{
 		while (costAtLeast >= 0) {
 			canBuy = new Deck();
 			for (Deck deck : state.buyOptions) {
-				if (deck.getCardAt(0).cost > costAtLeast) {
+				if (deck.getCardAt(0).cost == costAtLeast) {
 					canBuy.add(deck.getCardAt(0));
 				}
 			}
@@ -72,7 +71,21 @@ public class AIPlayer extends Player{
 	}
 	@Override
 	public Card selectCard(Deck d, CardType t, GameState state) {
-		// TODO Auto-generated method stub
-		return null;
+		if(t == null)
+			return selectCard(d,state);
+		Deck newD = d.makeSubDeck(t);
+		return selectCard(newD,state);
+	}
+	public Card selectCard(Deck d, CardType t, GameState state,String message) {
+		if(message.equalsIgnoreCase("Celler")){
+			
+		}
+		else if(message.equalsIgnoreCase("Chapel")){
+			
+		}
+		else if(message.equalsIgnoreCase("Mine")){
+			
+		}
+		return selectCard(d,state);
 	}
 }

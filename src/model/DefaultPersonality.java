@@ -4,11 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DefaultPersonality extends Personality {
-	/*Adventurer,Cellar,Chancellor,Chapel,CouncilRoom,Feast,
-	Festival,Labratory,Market,Mine,Moneylender,
-	Remodel,Smithy,Village,WoodCutter,Workshop,
-	Bureaucrat,Moat,Militia,Thief,Spy,Witch 
-	Copper, Curse, Duchy, Estate, Gold, Silver, Province*/
 	
 	public void initializeVectors() {
 		//just one example. I'll do more of these later.
@@ -18,11 +13,11 @@ public class DefaultPersonality extends Personality {
 		temp.expMoneyInHand = .2f;
 		temp.moneyDistribution = .8f;
 		vectors.put(card.toString(), temp);
-
+		
 		temp = new AttributeVector();
 		card = new ActionCard(ActionCardTypes.Cellar.toString());
 		temp.percentVictoryCards = .7f;
-		temp.invMoneyDistribution = .3f;		
+		temp.invMoneyDistribution = .3f;
 		vectors.put(card.toString(), temp);
 
 		temp = new AttributeVector();
@@ -42,8 +37,7 @@ public class DefaultPersonality extends Personality {
 
 		temp = new AttributeVector();
 		card = new ActionCard(ActionCardTypes.CouncilRoom.toString());
-		temp.expValueNextCard = .2f;
-		temp.expValueDraw = .2f;
+		temp.expValueNextCard = .7f;
 		temp.invExpValueEnemyDecks = .1f;	
 		temp.invPercentVictoryCards = .2f;
 		vectors.put(card.toString(), temp);
@@ -62,8 +56,7 @@ public class DefaultPersonality extends Personality {
 		temp = new AttributeVector();
 		card = new ActionCard(ActionCardTypes.Labratory.toString());
 		temp.invPercentVictoryCards = .7f;
-		temp.expValueNextCard = .2f;
-		temp.expValueDraw = .1f;
+		temp.expValueNextCard = .3f;		
 		vectors.put(card.toString(), temp);
 
 		temp = new AttributeVector();

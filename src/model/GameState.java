@@ -111,14 +111,18 @@ public class GameState {
 		}
 		declareWinner();
 	}
+	//Model clean up
 	public void bought(Card card) {
+		Deck d = null;
 		for (Deck deck : buyOptions) {
 			if (deck.getCardAt(0).equals(card)) {
-				deck.removeCardAt(0);
+				d = deck;
 				break;
 			}
 		}
-		currentPlayer.totalBuys--;
+		if(d.isEmpty()){
+			buyOptions.remove(d);
+		}
 	}
 	public void setupCommunityPiles(String s) throws InstantiationException, IllegalAccessException {
 		String[] decks = s.split(" ");

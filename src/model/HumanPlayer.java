@@ -18,14 +18,11 @@ public class HumanPlayer extends Player {
 				wait();
 			}
 			catch (InterruptedException e){
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		return selectedCardGUI;
 	}
-
-	@Override
 	//This should be the real used method
 	public Card selectCard(Deck d,CardType t, GameState state) {
 		CardSelectionFrame guiPicker = new CardSelectionFrame(d,this,t);
@@ -34,14 +31,14 @@ public class HumanPlayer extends Player {
 				wait();
 			}
 			catch (InterruptedException e){
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		return selectedCardGUI;
 	}
-
-	@Override
+	public Card selectCard(Deck d, CardType t, GameState state, String message) {
+		return selectCard(d,t,state);
+	}
 	public void playRound(GameState state) {
 		numActions = 1;
 		totalWorth = 0;

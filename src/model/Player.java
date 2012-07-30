@@ -55,18 +55,17 @@ public abstract class Player {
 	public Deck allCards(){
 		return new Deck(drawPile,hand,discard);
 	}
-	public Card buyCard(Deck d){
-		if(d.getCardAt(0).cost > totalWorth || d.isEmpty())
-			return new BlankCard();
-		Card c = d.removeCardAt(0);
+	
+	public Card buyCard(Card c,GameState state){
+		if(c.cost > totalWorth)
+			return null;
 		discard.add(c);
 		totalWorth -= c.cost;
-		totalBuys--;
+		state.bought(c);
 		return c;
 	}
 	
 	public abstract void playRound(GameState state);
-	
 	public abstract Card selectBuy(GameState state);
 	
 	//Wrapper function to encorporate existing architecture
@@ -86,11 +85,9 @@ public abstract class Player {
 		}
 	}
 	public abstract Card selectCard(Deck d,CardType t, GameState state);
+	public abstract Card selectCard(Deck d,CardType t,GameState state,String message);
+	
 	public String toString(){
 		return name;
-	}
-	public void buy(Card card, GameState state) {
-		this.discard.add(card);
-		state.bought(card);
 	}
 }
