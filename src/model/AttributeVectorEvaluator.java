@@ -223,7 +223,11 @@ public class AttributeVectorEvaluator {
        int expValueTotal = 0;
        for (int i = 0; i < playerCards.size(); i++) {
     	   Card card = playerCards.getCardAt(i);
-    	   expValueTotal += AttributeVectorEvaluator.EvaluateVector(card.vector, state);
+    	   if (player instanceof AIPlayer) {
+    		   AIPlayer aiPlayer = (AIPlayer)player;
+    		   expValueTotal += AttributeVectorEvaluator.EvaluateVector(aiPlayer.personality.getVector(card), state);
+    	   }
+    	   
        }
        return ((float)expValueTotal)/playerCards.size();
    }
@@ -233,7 +237,10 @@ public class AttributeVectorEvaluator {
        int expValueTotal = 0;
        for (int i = 0; i < playerCards.size(); i++) {
     	   Card card = playerCards.getCardAt(i);
-    	   expValueTotal += AttributeVectorEvaluator.EvaluateVector(card.vector, state);
+    	   if (player instanceof AIPlayer) {
+    		   AIPlayer aiPlayer = (AIPlayer)player;
+    		   expValueTotal += AttributeVectorEvaluator.EvaluateVector(aiPlayer.personality.getVector(card), state);
+    	   }      
        }
        return ((float)expValueTotal)/playerCards.size();
    }
@@ -243,7 +250,10 @@ public class AttributeVectorEvaluator {
        int expValueTotal = 0;
        for (int i = 0; i < playerCards.size(); i++) {
     	   Card card = playerCards.getCardAt(i);
-    	   expValueTotal += AttributeVectorEvaluator.EvaluateVector(card.vector, state);
+    	   if (player instanceof AIPlayer) {
+    		   AIPlayer aiPlayer = (AIPlayer)player;
+    		   expValueTotal += AttributeVectorEvaluator.EvaluateVector(aiPlayer.personality.getVector(card), state);
+    	   }
        }
        return ((float)expValueTotal)/playerCards.size();
    }
@@ -253,7 +263,10 @@ public class AttributeVectorEvaluator {
        int expValueTotal = 0;
        for (int i = 0; i < playerCards.size(); i++) {
     	   Card card = playerCards.getCardAt(i);
-    	   expValueTotal += AttributeVectorEvaluator.EvaluateVector(card.vector, state);
+    	   if (player instanceof AIPlayer) {
+    		   AIPlayer aiPlayer = (AIPlayer)player;
+    		   expValueTotal += AttributeVectorEvaluator.EvaluateVector(aiPlayer.personality.getVector(card), state);
+    	   }
        }
        return ((float)expValueTotal)/playerCards.size();
    }
@@ -266,7 +279,10 @@ public class AttributeVectorEvaluator {
 	       float playerExpValue = 0;
 	       for (int i = 0; i < playerCards.size(); i++) {
 	    	   Card card = playerCards.getCardAt(i);
-	    	   playerExpValue += AttributeVectorEvaluator.EvaluateVector(card.vector, state);
+	    	   if (player instanceof AIPlayer) {
+	    		   AIPlayer aiPlayer = (AIPlayer)player;
+	    		   expValueTotal += AttributeVectorEvaluator.EvaluateVector(aiPlayer.personality.getVector(card), state);
+	    	   }
 	       }
 	       expValueTotal += playerExpValue/players.size();
 	   }
@@ -276,15 +292,19 @@ public class AttributeVectorEvaluator {
 	   return 1-expValueEnemyDecks(state);
    }
    public static float expValueCosting5(GameState state) {
+	   Player player = state.currentPlayer;
        float maxExpValue = 0;
        for (Deck deck : state.buyOptions) {
     	   if (deck.size() == 0) {
     		   continue;
     	   }
     	   Card card = deck.getCardAt(0);
-    	   float expValue = AttributeVectorEvaluator.EvaluateVector(card.vector, state);
-    	   if (expValue > maxExpValue) {
-    		   maxExpValue = expValue;
+    	   if (player instanceof AIPlayer) {
+    		   AIPlayer aiPlayer = (AIPlayer)player;
+    		   float expValue = AttributeVectorEvaluator.EvaluateVector(aiPlayer.personality.getVector(card), state);
+    		   if (expValue > maxExpValue) {
+    			   maxExpValue = expValue;
+    		   }
     	   }
        }
        return maxExpValue;

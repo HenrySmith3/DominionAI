@@ -40,4 +40,26 @@ public class HumanPlayer extends Player {
 		}
 		return selectedCardGUI;
 	}
+
+	@Override
+	public void playRound(GameState state) {
+		numActions = 1;
+		totalWorth = 0;
+		totalBuys = 1;
+		selectedCardGUI = null;
+		while(!(selectedCardGUI instanceof BlankCard)){
+			Card c = selectCard(hand,CardType.Action, state);
+			if(!(c instanceof BlankCard)){
+				handleAction((ActionCard)c,state);
+			}
+		}
+		selectedCardGUI = null;
+		//This worth value is wrong
+		//I think this is fixed
+		totalWorth += hand.totalMoney();
+		Card c = null;
+		while(totalBuys > 0 && !(selectedCardGUI instanceof BlankCard)){
+			c = selectBuy(state);
+		}
+	}
 }

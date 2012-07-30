@@ -50,8 +50,6 @@ public class GameState {
 		if(currentPlayer != null)
 			players.add(currentPlayer);
 		currentPlayer = players.removeFirst();
-		currentPlayer.numActions = 1;
-		currentPlayer.totalBuys = 1;
 	}
 	public void takeTurn(Player p, GameState state){
 		//actionPhase(p);

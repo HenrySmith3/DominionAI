@@ -20,7 +20,7 @@ public class Deck {
 	Deck(Deck ... pieces){
 		this();
 		for(int i=0;i<pieces.length;i++){
-			merge(pieces[i]);
+			mergeCopy(pieces[i]);
 		}
 	}
 	public void add(Card c){
@@ -53,6 +53,11 @@ public class Deck {
 	public void merge(Deck d){
 		while(d.size() != 0){
 			theStack.add(d.removeCardAt(0));
+		}
+	}
+	public void mergeCopy(Deck d){
+		for (int i = 0; i < d.size(); i++){
+			theStack.add(d.getCardAt(0));
 		}
 	}
 	public void mergeShuffle(Deck d){
