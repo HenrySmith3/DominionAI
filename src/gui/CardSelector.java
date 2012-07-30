@@ -71,4 +71,7 @@ public class CardSelector extends JPanel {
 		ActionListener myFrame = (ActionListener) SwingUtilities.getWindowAncestor(this);
 		selectBtn.addActionListener(myFrame);
 	}
+	public void setEnabledActionCard(int num){
+		selectBtn.setEnabled(selectBtn.isEnabled() && num > 0);
+	}
 }
