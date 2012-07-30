@@ -22,6 +22,7 @@ public class AIPlayer extends Player{
 		//I think this is fixed
 		totalWorth += hand.totalMoney();
 		while(totalBuys > 0){
+			totalBuys--;
 			buy(selectBuy(state), state);
 		}
 	}

@@ -20,9 +20,6 @@ public class GameState {
 	public Deck inPlay;
 	public ArrayList<Deck> buyOptions;
 	public BufferedReader b;
-	public int currentWorth;
-	public int numOfActions;
-	public int numOfBuys;
 	public int numOfPlayers;
 	public int numTurns = 0;
 	public GameState(int computerPlayers, int humanPlayers,String actionDecksForGame) throws InstantiationException, IllegalAccessException{
@@ -38,7 +35,6 @@ public class GameState {
 			p.newHand();
 			players.add(p);
 		}
-		currentWorth = 0;
 		coppers = new Deck(new Copper(),60-7*numOfPlayers);
 		silvers = new Deck(new Silver(),40);
 		golds = new Deck(new Gold(),30);
@@ -51,11 +47,11 @@ public class GameState {
 		inPlay = new Deck();
 	}
 	public void nextPlayer(){
-		numOfActions = 1;
-		numOfBuys = 1;
 		if(currentPlayer != null)
 			players.add(currentPlayer);
 		currentPlayer = players.removeFirst();
+		currentPlayer.numActions = 1;
+		currentPlayer.totalBuys = 1;
 	}
 	public void takeTurn(Player p, GameState state){
 		//actionPhase(p);
@@ -124,7 +120,7 @@ public class GameState {
 				break;
 			}
 		}
-		numOfBuys--;
+		currentPlayer.totalBuys--;
 	}
 	public void setupCommunityPiles(String s) throws InstantiationException, IllegalAccessException {
 		String[] decks = s.split(" ");
