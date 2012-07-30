@@ -1,6 +1,8 @@
 package model;
 
 public class AIPlayer extends Player{
+	
+	//TODO fix so that it handles chapels and cellars
 	Personality personality;
 	public AIPlayer(String s, Personality personality) throws InstantiationException,
 			IllegalAccessException {
@@ -26,6 +28,7 @@ public class AIPlayer extends Player{
 
 	@Override
 	public Card selectBuy(GameState state) {
+		//TODO fix so that it buys the most expensive card possible.
 		float bestValue = 0;
 		Card bestCard = new BlankCard();
 		for (Deck deck : state.buyOptions) {
