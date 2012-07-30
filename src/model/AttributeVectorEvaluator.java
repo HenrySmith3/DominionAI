@@ -70,16 +70,33 @@ public class AttributeVectorEvaluator {
            if (canEndInTwo) return .5f;
            return 0;
    }
+   
    public static float expMoneyInHand(GameState state) {
            Player player = state.currentPlayer;
            Deck playerCards = player.allCards();
            Deck moneyCards = playerCards.makeSubDeck(CardType.Money);
            float percentageMoney = (moneyCards.size()*1f)/playerCards.size();
-           float percentageCopper = percentageMoney*moneyCards.totalOfCard(Copper.class);
-           float percentageSilver = percentageMoney*moneyCards.totalOfCard(Silver.class);
-           float percentageGold = percentageMoney*moneyCards.totalOfCard(Gold.class);
-           float expectedForDraw = percentageCopper + percentageSilver*2 + percentageGold*3; //Hard coded money values
-           return expectedForDraw*5; //Way overestimates your moneydraws, but is not a recursive call
+           float percentageCopper = moneyCards.totalOfCard(Copper.class)*1f/moneyCards.size();
+           float percentageSilver = moneyCards.totalOfCard(Silver.class)*1f/moneyCards.size();
+           float percentageGold = moneyCards.totalOfCard(Gold.class)*1f/moneyCards.size();
+           float expectedForDraw = percentageCopper*0.33f + percentageSilver*0.66f + percentageGold; //Hard coded money values
+           return expectedForDraw; //Way overestimates your moneydraws, but is not a recursive call
+   }
+   public static float moneyDisribution(GameState state){
+	   Player player = state.currentPlayer;
+       Deck playerCards = player.allCards();
+       Deck moneyCards = playerCards.makeSubDeck(CardType.Money);
+       int total = 0;
+       float unScaledTotal = 0;
+       for(int i=0;i<moneyCards.size();i++){
+    	   Card c = moneyCards.getCardAt(i);
+    	   if(c.getClass() == Silver.class)
+    		   unScaledTotal += 0.5;
+    	   else if(c.getClass() == Gold.class)
+    		   unScaledTotal += 1;
+    	   total++;
+       }
+       return unScaledTotal/total;
    }
    public static float percentVictoryCards(GameState state) {
 		   Player player = state.currentPlayer;
@@ -263,6 +280,15 @@ public class AttributeVectorEvaluator {
 	   }
 	   float result = expWitches/players.size();
 	   return result;
+   }
+   //Returns 0 when you have only estates
+   //Returns 1 when you have only Provinces
+   public static float victoryEfficency(GameState state){
+	   Deck playerCards = state.currentPlayer.allCards();
+	   Deck victoryCards = playerCards.makeSubDeck(CardType.Victory);
+	   if(victoryCards.size() == 0)
+		   return 0;
+	   return ((victoryCards.totalVictory()*1f/victoryCards.size()) - 1)/5;
    }
    //I'm going to change this. 0 means we're losing badly. 1 means we're winning well. 0.5 means a tie
    public static float currentlyWinning(GameState state) {
