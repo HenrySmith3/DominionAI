@@ -32,12 +32,24 @@ public class AIPlayer extends Player{
 		//TODO fix so that it buys the most expensive card possible.
 		float bestValue = 0;
 		Card bestCard = new BlankCard();
-		for (Deck deck : state.buyOptions) {
-			AttributeVector vec = personality.getVector(deck.getCardAt(0));
-			if (AttributeVectorEvaluator.EvaluateVector(vec, state) > bestValue) {
-				bestCard = deck.getCardAt(0);
-				bestValue = AttributeVectorEvaluator.EvaluateVector(vec, state);
+		int costAtLeast = totalWorth;
+		Deck canBuy;
+		while (costAtLeast >= 2) {
+			canBuy = new Deck();
+			for (Deck deck : state.buyOptions) {
+				if (deck.getCardAt(0).cost > costAtLeast) {
+					canBuy.add(deck.getCardAt(0));
+				}
 			}
+			for (int i = 0; i < canBuy.size(); i++) {
+				Card card = canBuy.getCardAt(i);
+				AttributeVector vec = personality.getVector(card);
+				if (AttributeVectorEvaluator.EvaluateVector(vec, state) > bestValue) {
+					bestCard = card;
+					bestValue = AttributeVectorEvaluator.EvaluateVector(vec, state);
+				}
+			}
+			costAtLeast--;
 		}
 		System.out.println(this + " just bought a " + bestCard);
 		return bestCard;

@@ -6,8 +6,10 @@ Test!
 Need special action for Mine, Chapel, Cellar, etc.
 Some balancing for the attribute evaluator. They really, really like feast.
 Infinite recursion in AttributeVectorEvaluator. (expValueNextCard)
+Computer bought a blank card.
 
 NOTES:
 Merge didn't make copies, it would empty a deck. There's now merge and mergeCopy in deck. This probably caused other bugs.
 All attributes assume that the currentPlayer is the one it is evaluating it for. Is that right?
 Are we using inPlay? Is it even correct?
+Need a "rough guess" for some things in AttributeVectorEvaluator. Assuming .5 isn't safe.
