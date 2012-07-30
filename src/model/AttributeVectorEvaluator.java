@@ -225,6 +225,10 @@ public class AttributeVectorEvaluator {
     	   Card card = playerCards.getCardAt(i);
     	   if (player instanceof AIPlayer) {
     		   AIPlayer aiPlayer = (AIPlayer)player;
+    		   //To fix infinite recursion.
+    		   if (aiPlayer.personality.getVector(card).expValueNextCard != 0) {
+    			   return .5f;
+    		   }
     		   expValueTotal += AttributeVectorEvaluator.EvaluateVector(aiPlayer.personality.getVector(card), state);
     	   }
     	   
@@ -239,6 +243,10 @@ public class AttributeVectorEvaluator {
     	   Card card = playerCards.getCardAt(i);
     	   if (player instanceof AIPlayer) {
     		   AIPlayer aiPlayer = (AIPlayer)player;
+    		   //To fix infinite recursion.
+    		   if (aiPlayer.personality.getVector(card).expValueDraw != 0) {
+    			   return .5f;
+    		   }
     		   expValueTotal += AttributeVectorEvaluator.EvaluateVector(aiPlayer.personality.getVector(card), state);
     	   }      
        }
@@ -252,6 +260,10 @@ public class AttributeVectorEvaluator {
     	   Card card = playerCards.getCardAt(i);
     	   if (player instanceof AIPlayer) {
     		   AIPlayer aiPlayer = (AIPlayer)player;
+    		   //To fix infinite recursion.
+    		   if (aiPlayer.personality.getVector(card).expValueDiscard != 0) {
+    			   return .5f;
+    		   }
     		   expValueTotal += AttributeVectorEvaluator.EvaluateVector(aiPlayer.personality.getVector(card), state);
     	   }
        }
@@ -265,6 +277,10 @@ public class AttributeVectorEvaluator {
     	   Card card = playerCards.getCardAt(i);
     	   if (player instanceof AIPlayer) {
     		   AIPlayer aiPlayer = (AIPlayer)player;
+    		   //To fix infinite recursion.
+    		   if (aiPlayer.personality.getVector(card).expValueHand != 0) {
+    			   return .5f;
+    		   }
     		   expValueTotal += AttributeVectorEvaluator.EvaluateVector(aiPlayer.personality.getVector(card), state);
     	   }
        }
@@ -281,6 +297,10 @@ public class AttributeVectorEvaluator {
 	    	   Card card = playerCards.getCardAt(i);
 	    	   if (player instanceof AIPlayer) {
 	    		   AIPlayer aiPlayer = (AIPlayer)player;
+    		   //To fix infinite recursion.
+    		   if (aiPlayer.personality.getVector(card).expValueEnemyDecks != 0) {
+    			   return .5f;
+    		   }
 	    		   expValueTotal += AttributeVectorEvaluator.EvaluateVector(aiPlayer.personality.getVector(card), state);
 	    	   }
 	       }
