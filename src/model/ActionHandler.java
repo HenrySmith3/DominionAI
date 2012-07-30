@@ -96,6 +96,11 @@ public class ActionHandler {
 				curPlayer.hand.add(curPlayer.selectBuy(temp.cost+2, state));
 				curPlayer.totalBuys += 1; //To offset the free buy
 				break;
+			case Smithy:
+				curPlayer.draw();
+				curPlayer.draw();
+				curPlayer.draw();
+				break;
 			case Village:
 				curPlayer.draw();
 				curPlayer.numActions += 2;

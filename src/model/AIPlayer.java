@@ -44,9 +44,10 @@ public class AIPlayer extends Player{
 			for (int i = 0; i < canBuy.size(); i++) {
 				Card card = canBuy.getCardAt(i);
 				AttributeVector vec = personality.getVector(card);
-				if (AttributeVectorEvaluator.EvaluateVector(vec, state) > bestValue) {
+				float f = AttributeVectorEvaluator.EvaluateVector(vec, state, this, card); 
+				if (f > bestValue) {
 					bestCard = card;
-					bestValue = AttributeVectorEvaluator.EvaluateVector(vec, state);
+					bestValue = f;
 				}
 			}
 			costAtLeast--;
@@ -57,13 +58,13 @@ public class AIPlayer extends Player{
 	public Card selectCard(Deck d, GameState state) {
 		float bestValue = 0;
 		Card bestCard = new BlankCard();
-		Card currentCard = new BlankCard();
-		while (!d.isEmpty()) {
-			currentCard = d.draw();
+		for(int i=0;i<d.size();i++){
+			Card currentCard = d.getCardAt(i);
 			AttributeVector vec = personality.getVector(currentCard);
-			if (AttributeVectorEvaluator.EvaluateVector(vec, state) > bestValue) {
+			float f = AttributeVectorEvaluator.EvaluateVector(vec, state, this, currentCard);
+			if (f > bestValue) {
 				bestCard = currentCard;
-				bestValue = AttributeVectorEvaluator.EvaluateVector(vec, state);
+				bestValue = f;
 			}
 		}
 		System.out.println(this + " plays a " + bestCard);

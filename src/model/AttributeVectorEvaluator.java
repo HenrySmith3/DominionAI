@@ -3,40 +3,47 @@ package model;
 import java.util.LinkedList;
 
 public class AttributeVectorEvaluator {
-	public static float EvaluateVector(AttributeVector vec, GameState state) {
+	
+	public static float EvaluateVector(AttributeVector vec, GameState state,Player p,Card c) {
 		float result = 0;
+		boolean givesAction = c.type == CardType.Action;
+		givesAction = givesAction &&
+					((ActionCard)c).identity == ActionCardTypes.Cellar ||
+					((ActionCard)c).identity == ActionCardTypes.Festival ||
+					((ActionCard)c).identity == ActionCardTypes.Labratory ||
+					((ActionCard)c).identity == ActionCardTypes.Market ||
+					((ActionCard)c).identity == ActionCardTypes.Village;
 		//we can't use == because we're comparing floats.
 		//if it's less than .001, it's zero.
 		result += (vec.percentageLeft < .001) ? 0 : percentageLeft(state);
 		result += (vec.minTurnsRequiredToEnd < .001) ? 0 : minTurnsRequiredToEnd(state);
-		result += (vec.expMoneyInHand < .001) ? 0 : expMoneyInHand(state);
-		result += (vec.percentVictoryCards < .001) ? 0 : percentVictoryCards(state);
-		result += (vec.expNumBuys < .001) ? 0 : expNumBuys(state);
-		result += (vec.perEstate < .001) ? 0 : perEstate(state);
-		result += (vec.perDuchy < .001) ? 0 : perDuchy(state);
-		result += (vec.perProvince < .001) ? 0 : perProvince(state);
-		result += (vec.expValueNextCard < .001) ? 0 : expValueNextCard(state);
-		result += (vec.expValueDraw < .001) ? 0 : expValueDraw(state);
-		result += (vec.expValueDiscard < .001) ? 0 : expValueDiscard(state);
-		result += (vec.expValueHand < .001) ? 0 : expValueHand(state);
-		result += (vec.expValueEnemyDecks < .001) ? 0 : expValueEnemyDecks(state);
-		result += (vec.expValueCosting5 < .001) ? 0 : expValueCosting5(state);
+		result += (vec.expMoneyInHand < .001) ? 0 : expMoneyInHand(state,p);
+		result += (vec.percentVictoryCards < .001) ? 0 : percentVictoryCards(state,p);
+		result += (vec.expNumBuys < .001) ? 0 : expNumBuys(state,p);
+		result += (vec.perEstate < .001) ? 0 : perEstate(state,p);
+		result += (vec.perDuchy < .001) ? 0 : perDuchy(state,p);
+		result += (vec.perProvince < .001) ? 0 : perProvince(state,p);
+		result += (vec.expValueNextCard < .001) ? 0 : expValueNextCard(state,p,p.drawPile, givesAction);
+		result += (vec.expValueDiscard < .001) ? 0 : expValueDiscard(state,p);
+		result += (vec.expValueHand < .001) ? 0 : expValueHand(state,p);
+		result += (vec.expValueEnemyDecks < .001) ? 0 : expValueEnemyDecks(state,p);
+		result += (vec.expValueCosting5 < .001) ? 0 : expValueCosting5(state,p);
 		result += (vec.cardsCosting5 < .001) ? 0 : cardsCosting5(state);
 		result += (vec.cursesRemaining < .001) ? 0 : cursesRemaining(state);
 		result += (vec.expEnemiesDrawingWitches < .001) ? 0 : expEnemiesDrawingWitches(state);
-		result += (vec.currentlyWinning < .001) ? 0 : currentlyWinning(state);
-		result += (vec.moneyDistribution < .001) ? 0 : moneyDisribution(state);
+		result += (vec.currentlyWinning < .001) ? 0 : currentlyWinning(state,p);
+		result += (vec.moneyDistribution < .001) ? 0 : moneyDisribution(state,p);
 		result += (vec.invPercentageLeft < .001) ? 0 : invPercentageLeft(state);
-		result += (vec.victoryEfficiency < .001) ? 0 : victoryEfficiency(state);
-		result += (vec.invExpValueEnemyDecks < .001) ? 0 : invExpValueEnemyDecks(state);
-		result += (vec.invPercentVictoryCards < .001) ? 0 : invPercentVictoryCards(state);
-		result += (vec.perActionCards < .001) ? 0 : perActionCards(state);
-		result += (vec.perCopper < .001) ? 0 : perCopper(state);
-		result += (vec.invPerActionCards < .001) ? 0 : invPerActionCards(state);
-		result += (vec.percentMoney < .001) ? 0 : percentMoney(state);
+		result += (vec.victoryEfficiency < .001) ? 0 : victoryEfficiency(state,p);
+		result += (vec.invExpValueEnemyDecks < .001) ? 0 : invExpValueEnemyDecks(state,p);
+		result += (vec.invPercentVictoryCards < .001) ? 0 : invPercentVictoryCards(state,p);
+		result += (vec.perActionCards < .001) ? 0 : perActionCards(state,p);
+		result += (vec.perCopper < .001) ? 0 : perCopper(state,p);
+		result += (vec.invPerActionCards < .001) ? 0 : invPerActionCards(state,p);
+		result += (vec.percentMoney < .001) ? 0 : percentMoney(state,p);
 		result += (vec.cardsCosting4 < .001) ? 0 : cardsCosting4(state);
 		result += (vec.alwaysOne < .001) ? 0 : alwaysOne(state);
-		result += (vec.invMoneyDistribution < .001) ? 0 : invMoneyDistribution(state);
+		result += (vec.invMoneyDistribution < .001) ? 0 : invMoneyDistribution(state,p);
 		
 		return result;
 		
@@ -86,19 +93,16 @@ public class AttributeVectorEvaluator {
            return 0;
    }
    
-   public static float expMoneyInHand(GameState state) {
-           Player player = state.currentPlayer;
+   public static float expMoneyInHand(GameState state,Player player) {
            Deck playerCards = player.allCards();
            Deck moneyCards = playerCards.makeSubDeck(CardType.Money);
-           float percentageMoney = (moneyCards.size()*1f)/playerCards.size();
            float percentageCopper = moneyCards.totalOfCard(Copper.class)*1f/moneyCards.size();
            float percentageSilver = moneyCards.totalOfCard(Silver.class)*1f/moneyCards.size();
            float percentageGold = moneyCards.totalOfCard(Gold.class)*1f/moneyCards.size();
            float expectedForDraw = percentageCopper*0.33f + percentageSilver*0.66f + percentageGold; //Hard coded money values
            return expectedForDraw; //Way overestimates your moneydraws, but is not a recursive call
    }
-   public static float moneyDisribution(GameState state){
-	   Player player = state.currentPlayer;
+   public static float moneyDisribution(GameState state,Player player){
        Deck playerCards = player.allCards();
        Deck moneyCards = playerCards.makeSubDeck(CardType.Money);
        int total = 0;
@@ -113,8 +117,7 @@ public class AttributeVectorEvaluator {
        }
        return unScaledTotal/total;
    }
-   public static float percentVictoryCards(GameState state) {
-	   Player player = state.currentPlayer;
+   public static float percentVictoryCards(GameState state,Player player) {
        Deck playerCards = player.allCards();
        int numVictory = 0;
        for (int i = 0; i < playerCards.size(); i++) {
@@ -124,8 +127,7 @@ public class AttributeVectorEvaluator {
        }
        return ((float)numVictory)/playerCards.size();
    }
-   public static float percentMoney(GameState state) {
-	   Player player = state.currentPlayer;
+   public static float percentMoney(GameState state,Player player) {
        Deck playerCards = player.allCards();
        int numVictory = 0;
        for (int i = 0; i < playerCards.size(); i++) {
@@ -135,8 +137,7 @@ public class AttributeVectorEvaluator {
        }
        return ((float)numVictory)/playerCards.size();
    }
-   public static float perActionCards(GameState state) {
-	   Player player = state.currentPlayer;
+   public static float perActionCards(GameState state,Player player) {
        Deck playerCards = player.allCards();
        int numAction = 0;
        for (int i = 0; i < playerCards.size(); i++) {
@@ -146,14 +147,13 @@ public class AttributeVectorEvaluator {
        }
        return ((float)numAction)/playerCards.size();
    }
-   public static float invPerActionCards(GameState state){
+   public static float invPerActionCards(GameState state,Player player){
 	   return 1-percentageLeft(state);
 }
-   public static float invPercentVictoryCards(GameState state){
-	   return 1-percentVictoryCards(state);
+   public static float invPercentVictoryCards(GameState state,Player player){
+	   return 1-percentVictoryCards(state,player);
    }
-   public static float expNumBuys(GameState state) {
-	   Player player = state.currentPlayer;
+   public static float expNumBuys(GameState state,Player player) {
        Deck playerCards = player.allCards();
        int numBuys = 0;
        for (int i = 0; i < playerCards.size(); i++) {
@@ -173,8 +173,7 @@ public class AttributeVectorEvaluator {
        }
        return (((float)numBuys)/playerCards.size());
    }
-   public static float perEstate(GameState state) {
-	   Player player = state.currentPlayer;
+   public static float perEstate(GameState state,Player player) {
        Deck playerCards = player.allCards();
        int numEstate = 0;
        for (int i = 0; i < playerCards.size(); i++) {
@@ -184,8 +183,8 @@ public class AttributeVectorEvaluator {
        }
        return ((float)numEstate)/playerCards.size();
    }
-   public static float perDuchy(GameState state) {
-	   Player player = state.currentPlayer;
+   public static float perDuchy(GameState state,Player player) {
+	   
        Deck playerCards = player.allCards();
        int numDuchy = 0;
        for (int i = 0; i < playerCards.size(); i++) {
@@ -195,8 +194,8 @@ public class AttributeVectorEvaluator {
        }
        return ((float)numDuchy)/playerCards.size();
    }
-   public static float perCopper(GameState state) {
-	   Player player = state.currentPlayer;
+   public static float perCopper(GameState state,Player player) {
+	   
        Deck playerCards = player.allCards();
        int numCopper = 0;
        for (int i = 0; i < playerCards.size(); i++) {
@@ -206,8 +205,8 @@ public class AttributeVectorEvaluator {
        }
        return ((float)numCopper)/playerCards.size();
    }
-   public static float perProvince(GameState state) {
-	   Player player = state.currentPlayer;
+   public static float perProvince(GameState state,Player player) {
+	   
        Deck playerCards = player.allCards();
        int numProvince = 0;
        for (int i = 0; i < playerCards.size(); i++) {
@@ -217,10 +216,11 @@ public class AttributeVectorEvaluator {
        }
        return ((float)numProvince)/playerCards.size();
    }
-   public static float expValueNextCard(GameState state) {
-	   Player player = state.currentPlayer;
-       Deck playerCards = player.allCards();
-       int expValueTotal = 0;
+   //Total value of deck
+   //HELPER FUNCTION
+   public static float expValueDeck(GameState state,Player player,Deck d) {
+	   Deck playerCards = player.allCards();
+	   float expValueTotal = 0;
        for (int i = 0; i < playerCards.size(); i++) {
     	   Card card = playerCards.getCardAt(i);
     	   if (player instanceof AIPlayer) {
@@ -229,31 +229,45 @@ public class AttributeVectorEvaluator {
     		   if (aiPlayer.personality.getVector(card).expValueNextCard != 0) {
     			   return .5f;
     		   }
-    		   expValueTotal += AttributeVectorEvaluator.EvaluateVector(aiPlayer.personality.getVector(card), state);
+    		   expValueTotal += AttributeVectorEvaluator.EvaluateVector(aiPlayer.personality.getVector(card), state,player, card);
     	   }
     	   
        }
-       return ((float)expValueTotal)/playerCards.size();
+       return expValueTotal/playerCards.size();
    }
-   public static float expValueDraw(GameState state) {
-	   Player player = state.currentPlayer;
-       Deck playerCards = player.drawPile;
-       int expValueTotal = 0;
-       for (int i = 0; i < playerCards.size(); i++) {
-    	   Card card = playerCards.getCardAt(i);
-    	   if (player instanceof AIPlayer) {
-    		   AIPlayer aiPlayer = (AIPlayer)player;
-    		   //To fix infinite recursion.
-    		   if (aiPlayer.personality.getVector(card).expValueDraw != 0) {
-    			   return .5f;
-    		   }
-    		   expValueTotal += AttributeVectorEvaluator.EvaluateVector(aiPlayer.personality.getVector(card), state);
-    	   }      
+   //The value of a draw
+   //The deck is used for context
+   //The actions wanted are card specific
+   public static float expValueNextCard(GameState state,Player player,Deck d,boolean actionsWanted) {
+	   float expValueTotal = 0;
+       for (int i = 0; i < d.size(); i++) {
+    	   Card card = d.getCardAt(i);
+    	   if(card.type == CardType.Money){
+    		   if(card instanceof Copper)
+    			   expValueTotal += 0.33;
+    		   else if(card instanceof Silver)
+    			   expValueTotal += 0.66;
+    		   else if(card instanceof Gold)
+    			   expValueTotal += 1;
+    	   }
+    	   else if(card.type == CardType.Action && actionsWanted){
+    		   if (player instanceof AIPlayer) {
+        		   AIPlayer aiPlayer = (AIPlayer)player;
+        		   expValueTotal += AttributeVectorEvaluator.EvaluateVector(aiPlayer.personality.getVector(card),state,player, card);
+        	   }
+    	   }
        }
-       return ((float)expValueTotal)/playerCards.size();
+       return expValueTotal/d.size();
    }
-   public static float expValueDiscard(GameState state) {
-	   Player player = state.currentPlayer;
+   //Card c should be in deck d
+   public static float expValueNextCard(GameState state,Player player,Deck d,boolean actionsWanted,Card c) {
+	   Deck cloneD = new Deck(d);
+	   cloneD.remove(c); //This card must be in the deck
+	   return expValueNextCard(state,player,cloneD,actionsWanted);
+   }
+   
+   public static float expValueDiscard(GameState state,Player player) {
+	   
        Deck playerCards = player.discard;
        int expValueTotal = 0;
        for (int i = 0; i < playerCards.size(); i++) {
@@ -264,13 +278,13 @@ public class AttributeVectorEvaluator {
     		   if (aiPlayer.personality.getVector(card).expValueDiscard != 0) {
     			   return .5f;
     		   }
-    		   expValueTotal += AttributeVectorEvaluator.EvaluateVector(aiPlayer.personality.getVector(card), state);
+    		   expValueTotal += AttributeVectorEvaluator.EvaluateVector(aiPlayer.personality.getVector(card), state,player, card);
     	   }
        }
        return ((float)expValueTotal)/playerCards.size();
    }
-   public static float expValueHand(GameState state) {
-	   Player player = state.currentPlayer;
+   public static float expValueHand(GameState state,Player player) {
+	   
        Deck playerCards = player.hand;
        int expValueTotal = 0;
        for (int i = 0; i < playerCards.size(); i++) {
@@ -281,38 +295,24 @@ public class AttributeVectorEvaluator {
     		   if (aiPlayer.personality.getVector(card).expValueHand != 0) {
     			   return .5f;
     		   }
-    		   expValueTotal += AttributeVectorEvaluator.EvaluateVector(aiPlayer.personality.getVector(card), state);
+    		   expValueTotal += AttributeVectorEvaluator.EvaluateVector(aiPlayer.personality.getVector(card), state,player, card);
     	   }
        }
        return ((float)expValueTotal)/playerCards.size();
    }
-   public static float expValueEnemyDecks(GameState state) {
+   public static float expValueEnemyDecks(GameState state,Player player) {
 	   LinkedList<Player> players = (LinkedList<Player>)state.players.clone();
-	   players.remove(state.currentPlayer);
-	   float expValueTotal = 0;
-	   for (Player player : players) {
-	       Deck playerCards = player.allCards();
-	       float playerExpValue = 0;
-	       for (int i = 0; i < playerCards.size(); i++) {
-	    	   Card card = playerCards.getCardAt(i);
-	    	   if (player instanceof AIPlayer) {
-	    		   AIPlayer aiPlayer = (AIPlayer)player;
-    		   //To fix infinite recursion.
-    		   if (aiPlayer.personality.getVector(card).expValueEnemyDecks != 0) {
-    			   return .5f;
-    		   }
-	    		   expValueTotal += AttributeVectorEvaluator.EvaluateVector(aiPlayer.personality.getVector(card), state);
-	    	   }
-	       }
-	       expValueTotal += playerExpValue/players.size();
+	   float bestexpValueEnemy = 0;
+	   for(Player aPlayer : players){
+		   Math.max(bestexpValueEnemy,expValueDeck(state,aPlayer, aPlayer.drawPile));
 	   }
-	   return expValueTotal/players.size();
+	   return bestexpValueEnemy;
    }
-   public static float invExpValueEnemyDecks(GameState state){
-	   return 1-expValueEnemyDecks(state);
+   public static float invExpValueEnemyDecks(GameState state,Player player){
+	   return 1-expValueEnemyDecks(state,player);
    }
-   public static float expValueCosting5(GameState state) {
-	   Player player = state.currentPlayer;
+   public static float expValueCosting5(GameState state,Player player) {
+	   
        float maxExpValue = 0;
        for (Deck deck : state.buyOptions) {
     	   if (deck.size() == 0) {
@@ -321,7 +321,7 @@ public class AttributeVectorEvaluator {
     	   Card card = deck.getCardAt(0);
     	   if (player instanceof AIPlayer) {
     		   AIPlayer aiPlayer = (AIPlayer)player;
-    		   float expValue = AttributeVectorEvaluator.EvaluateVector(aiPlayer.personality.getVector(card), state);
+    		   float expValue = AttributeVectorEvaluator.EvaluateVector(aiPlayer.personality.getVector(card), state,player, card);
     		   if (expValue > maxExpValue) {
     			   maxExpValue = expValue;
     		   }
@@ -393,7 +393,7 @@ public class AttributeVectorEvaluator {
    }
  //Returns 0 when you have only estates
    //Returns 1 when you have only Provinces
-   public static float victoryEfficiency(GameState state){
+   public static float victoryEfficiency(GameState state,Player player){
 	   Deck playerCards = state.currentPlayer.allCards();
 	   Deck victoryCards = playerCards.makeSubDeck(CardType.Victory);
 	   if(victoryCards.size() == 0)
@@ -402,18 +402,18 @@ public class AttributeVectorEvaluator {
    }
  //Returns 0 when you have only copper
    //Returns 1 when you have only gold
-   public static float moneyDistribution(GameState state){
+   public static float moneyDistribution(GameState state,Player player){
 	   Deck playerCards = state.currentPlayer.allCards();
 	   Deck moneyCards = playerCards.makeSubDeck(CardType.Money);
 	   if(moneyCards.size() == 0)
 		   return 0;
 	   return ((moneyCards.totalMoney()*1f/moneyCards.size()) - 1)/2;
    }
-   public static float invMoneyDistribution(GameState state){
-	   return 1-moneyDisribution(state);
+   public static float invMoneyDistribution(GameState state,Player player){
+	   return 1-moneyDisribution(state,player);
    }
    //I'm going to change this. 0 means we're losing badly. 1 means we're winning well. 0.5 means a tie
-   public static float currentlyWinning(GameState state) {
+   public static float currentlyWinning(GameState state,Player player) {
 	   LinkedList<Player> players = (LinkedList<Player>)state.players.clone();
 	   players.remove(state.currentPlayer);
 	   Deck curPlayerCards = state.currentPlayer.allCards();
@@ -423,8 +423,8 @@ public class AttributeVectorEvaluator {
 		   Card card = curPlayerCards.getCardAt(i);
 		   playerPoints += card.victory;
 	   }
-	   for (Player player : players) {
-		   int enemyPoints = player.allCards().totalVictory();
+	   for (Player aPlayer : players) {
+		   int enemyPoints = aPlayer.allCards().totalVictory();
 	       inLeadBy = Math.min(inLeadBy, playerPoints - enemyPoints);
 	   }
 	   //If we're ahead, behind by 18 points, we're really secure in our spot
