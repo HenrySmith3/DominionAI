@@ -42,7 +42,8 @@ public class DefaultPersonality extends Personality {
 
 		temp = new AttributeVector();
 		card = new ActionCard(ActionCardTypes.CouncilRoom.toString());
-		temp.expValueNextCard = .7f;
+		temp.expValueNextCard = .2f;
+		temp.expValueDraw = .2f;
 		temp.invExpValueEnemyDecks = .1f;	
 		temp.invPercentVictoryCards = .2f;
 		vectors.put(card.toString(), temp);
@@ -61,7 +62,8 @@ public class DefaultPersonality extends Personality {
 		temp = new AttributeVector();
 		card = new ActionCard(ActionCardTypes.Labratory.toString());
 		temp.invPercentVictoryCards = .7f;
-		temp.expValueNextCard = .3f;		
+		temp.expValueNextCard = .2f;
+		temp.expValueDraw = .1f;
 		vectors.put(card.toString(), temp);
 
 		temp = new AttributeVector();

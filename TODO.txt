@@ -5,6 +5,7 @@ Test!
 Need special action for Mine, Chapel, Cellar, etc.
 Some balancing for the attribute evaluator. They really, really like feast. (more attributes per card). 
 Infinite recursion in AttributeVectorEvaluator (sort of fixed, will probably pop back up). 
+Fix attributes that use expected values.q
 
 NOTES:
 Merge didn't make copies, it would empty a deck. There's now merge and mergeCopy in deck. This probably caused other bugs.
@@ -12,3 +13,4 @@ All attributes assume that the currentPlayer is the one it is evaluating it for.
 Are we using inPlay? Is it even correct?
 Need a "rough guess" for some things in AttributeVectorEvaluator. Assuming .5 isn't safe.
 Duplicates between buy options and community piles? Is there effort needed to keep them synced?
+What if we made it so that the AI would favor a lot of different cards? Diminish the result of the attribute vector evaluation based on how many of that card you already hold. This could definitely make the AI seem smarter without being smarter. 
