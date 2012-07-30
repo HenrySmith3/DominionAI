@@ -22,7 +22,7 @@ public class AIPlayer extends Player{
 		//I think this is fixed
 		totalWorth += hand.totalMoney();
 		while(totalBuys > 0){
-			selectBuy(state);
+			buy(selectBuy(state), state);
 		}
 	}
 
@@ -38,6 +38,7 @@ public class AIPlayer extends Player{
 				bestValue = AttributeVectorEvaluator.EvaluateVector(vec, state);
 			}
 		}
+		System.out.println(this + " just bought a " + bestCard);
 		return bestCard;
 	}
 	public Card selectCard(Deck d, GameState state) {
@@ -52,6 +53,7 @@ public class AIPlayer extends Player{
 				bestValue = AttributeVectorEvaluator.EvaluateVector(vec, state);
 			}
 		}
+		System.out.println(this + " plays a " + bestCard);
 		return bestCard;
 	}
 	@Override

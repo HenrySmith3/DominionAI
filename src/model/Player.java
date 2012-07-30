@@ -108,4 +108,8 @@ public abstract class Player {
 	public String toString(){
 		return name;
 	}
+	public void buy(Card card, GameState state) {
+		this.discard.add(card);
+		state.bought(card);
+	}
 }

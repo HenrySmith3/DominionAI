@@ -24,10 +24,8 @@ public class GameState {
 	public int numOfActions;
 	public int numOfBuys;
 	public int numOfPlayers;
-	GameMonitor monitor;
 	public int numTurns = 0;
 	public GameState(int computerPlayers, int humanPlayers,String actionDecksForGame) throws InstantiationException, IllegalAccessException{
-		monitor = new TextMonitor();
 		this.numOfPlayers = computerPlayers + humanPlayers;
 		b = new BufferedReader(new InputStreamReader(System.in));
 		for(int i=0;i<computerPlayers;i++){
@@ -116,7 +114,6 @@ public class GameState {
 		while(!gameFinished()){
 			nextPlayer();
 			takeTurn(currentPlayer, this);
-			monitor.update(this);
 		}
 		declareWinner();
 	}
