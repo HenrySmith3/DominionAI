@@ -150,7 +150,7 @@ public class AttributeVectorEvaluator {
 	   return 1-percentageLeft(state);
 }
    public static float invPercentVictoryCards(GameState state){
-	   return 1-invPercentVictoryCards(state);
+	   return 1-percentVictoryCards(state);
    }
    public static float expNumBuys(GameState state) {
 	   Player player = state.currentPlayer;
@@ -273,7 +273,7 @@ public class AttributeVectorEvaluator {
 	   return expValueTotal/players.size();
    }
    public static float invExpValueEnemyDecks(GameState state){
-	   return 1-invExpValueEnemyDecks(state);
+	   return 1-expValueEnemyDecks(state);
    }
    public static float expValueCosting5(GameState state) {
        float maxExpValue = 0;
