@@ -27,4 +27,16 @@ public class AttributeVector {
 	public float cursesRemaining = 0;//Number of curses remaining to give.
 	public float expEnemiesDrawingWitches = 0;//Relative number of witches other players are expected to draw.
 	public float currentlyWinning = 0;//How am I doing relative to other player in terms of vicoty points (one for loser, one for winner)
+	public float moneyDistribution = 0;
+	public float invMoneyDistribution = 0;
+	public float invPercentageLeft = 0;
+	public float victoryEfficiency = 0;
+	public float invExpValueEnemyDecks = 0;
+	public float invPercentVictoryCards = 0;
+	public float perActionCards = 0;
+	public float perCopper = 0;
+	public float invPerActionCards = 0;
+	public float percentMoney = 0;
+	public float cardsCosting4 = 0;
+	public float alwaysOne = 0;
 }

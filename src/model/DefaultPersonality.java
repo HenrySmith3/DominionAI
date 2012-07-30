@@ -12,35 +12,35 @@ public class DefaultPersonality extends Personality {
 		AttributeVector temp = new AttributeVector();
 		Card card = new ActionCard(ActionCardTypes.Adventurer.toString());
 		temp.expMoneyInHand = .2f;
-		//temp.moneyDistribution = .8f;
+		temp.moneyDistribution = .8f;
 		vectors.put(card, temp);
 
 		temp = new AttributeVector();
 		card = new ActionCard(ActionCardTypes.Cellar.toString());
 		temp.percentVictoryCards = .7f;
-		//temp.invMoneyDistribution = .3f;		
+		temp.invMoneyDistribution = .3f;		
 		vectors.put(card, temp);
 
 		temp = new AttributeVector();
 		card = new ActionCard(ActionCardTypes.Chancellor.toString());
-		//temp.invMoneyDistribution = .9f;
+		temp.invMoneyDistribution = .9f;
 		temp.percentVictoryCards = .1f;		
 		vectors.put(card, temp);
 
 		temp = new AttributeVector();
 		card = new ActionCard(ActionCardTypes.Chapel.toString());
-		//temp.invMoneyDistribution = .2f;
+		temp.invMoneyDistribution = .2f;
 		temp.perEstate = .05f;
-		//temp.invPercentageLeft = .3f;
+		temp.invPercentageLeft = .3f;
 		temp.expValueEnemyDecks = .05f;
-		//temp.victoryEfficiency = .4f;
+		temp.victoryEfficiency = .4f;
 		vectors.put(card, temp);
 
 		temp = new AttributeVector();
 		card = new ActionCard(ActionCardTypes.CouncilRoom.toString());
 		temp.expValueNextCard = .7f;
-		//temp.invExpValueEnemyDecks = .1f;	
-		//temp.invPercentVictoryCards = .2f;
+		temp.invExpValueEnemyDecks = .1f;	
+		temp.invPercentVictoryCards = .2f;
 		vectors.put(card, temp);
 
 		temp = new AttributeVector();
@@ -50,13 +50,13 @@ public class DefaultPersonality extends Personality {
 
 		temp = new AttributeVector();
 		card = new ActionCard(ActionCardTypes.Festival.toString());
-		//temp.perActionCards = .7f;
+		temp.perActionCards = .7f;
 		temp.expMoneyInHand = .3f;
 		vectors.put(card, temp);
 
 		temp = new AttributeVector();
 		card = new ActionCard(ActionCardTypes.Labratory.toString());
-		//temp.invpercentVictoryCards = .7f;
+		temp.invPercentVictoryCards = .7f;
 		temp.expValueNextCard = .3f;		
 		vectors.put(card, temp);
 
@@ -68,79 +68,79 @@ public class DefaultPersonality extends Personality {
 
 		temp = new AttributeVector();
 		card = new ActionCard(ActionCardTypes.Mine.toString());
-		//temp.invMoneyDistribution = .6f;
-		//temp.invPercentageLeft = .2f;
-		//temp.percentMoneyCards = .2f;
+		temp.invMoneyDistribution = .6f;
+		temp.invPercentageLeft = .2f;
+		temp.percentMoney = .2f;
 		vectors.put(card, temp);
 
 		temp = new AttributeVector();
 		card = new ActionCard(ActionCardTypes.Moneylender.toString());
-		//temp.perCopper = .9f;
-		//temp.invPercentAction = .1f;		
+		temp.perCopper = .9f;
+		temp.invPerActionCards = .1f;		
 		vectors.put(card, temp);
 
 		temp = new AttributeVector();
 		card = new ActionCard(ActionCardTypes.Smithy.toString());
-		//temp.pecentMoney = .7f;
-		//temp.moneyDistribution = .3f;
+		temp.percentMoney = .7f;
+		temp.moneyDistribution = .3f;
 		vectors.put(card, temp);
 
 		temp = new AttributeVector();
 		card = new ActionCard(ActionCardTypes.Village.toString());
-		//temp.perActionCard = 1f;	
+		temp.perActionCards = 1f;	
 		vectors.put(card, temp);
 
 		temp = new AttributeVector();
 		card = new ActionCard(ActionCardTypes.WoodCutter.toString());
-		//temp.invPercentAction = .5f;
+		temp.invPerActionCards = .5f;
 		temp.expMoneyInHand = .5f;		
 		vectors.put(card, temp);
 
 		temp = new AttributeVector();
 		card = new ActionCard(ActionCardTypes.Workshop.toString());
-		//temp.cardsCosting4 = .6f;
-		//temp.invPercentDone = .2f;
+		temp.cardsCosting4 = .6f;
+		temp.invPercentageLeft = .2f;
 		temp.invExpMoneyInHand = .2f;
 		vectors.put(card, temp);
 		
 		temp = new AttributeVector();
 		card = new ActionCard(ActionCardTypes.Witch.toString());
 		temp.cursesRemaining = .9f;
-		//temp.invPercentLeft = .1f;		
+		temp.invPercentageLeft = .1f;		
 		vectors.put(card, temp);
 
 		temp = new AttributeVector();
 		card = new Copper();
-		//temp.invPercentageLeft = .3f;	
+		temp.invPercentageLeft = .3f;	
 		temp.expMoneyInHand = .2f;		
 		vectors.put(card, temp);
 		
 		temp = new AttributeVector();
 		card = new Silver();
 		temp.invExpMoneyInHand = .6f;
-		//temp.invMoneyDistribution = .4f;		
+		temp.invMoneyDistribution = .4f;		
 		vectors.put(card, temp);
 		
 		temp = new AttributeVector();
 		card = new Gold();
-		//temp.invMoneyDisribution = 1.2f;
+		temp.invMoneyDistribution = 1.2f;
 		vectors.put(card, temp);
 
 		temp = new AttributeVector();
 		card = new Estate();
 		temp.minTurnsRequiredToEnd = .5f;
-		//temp.invPercentageLeft = .1f;
+		temp.invPercentageLeft = .1f;
 		vectors.put(card, temp);
 		
 		temp = new AttributeVector();
 		card = new Duchy();
-		//temp.invPercentageLeft = .7f;
+		temp.invPercentageLeft = .7f;
 		temp.currentlyWinning = .3f;		
 		vectors.put(card, temp);
 
 		temp = new AttributeVector();
 		card = new Province();
-		//temp.alwaysOne = 1.5f;
+		temp.alwaysOne = 1.5f;
 		vectors.put(card, temp);
 
 	}

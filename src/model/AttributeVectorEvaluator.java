@@ -25,6 +25,18 @@ public class AttributeVectorEvaluator {
 		result += (vec.cursesRemaining < .001) ? 0 : cursesRemaining(state);
 		result += (vec.expEnemiesDrawingWitches < .001) ? 0 : expEnemiesDrawingWitches(state);
 		result += (vec.currentlyWinning < .001) ? 0 : currentlyWinning(state);
+		result += (vec.moneyDistribution < .001) ? 0 : moneyDisribution(state);
+		result += (vec.invPercentageLeft < .001) ? 0 : invPercentageLeft(state);
+		result += (vec.victoryEfficiency < .001) ? 0 : victoryEfficiency(state);
+		result += (vec.invExpValueEnemyDecks < .001) ? 0 : invExpValueEnemyDecks(state);
+		result += (vec.invPercentVictoryCards < .001) ? 0 : invPercentVictoryCards(state);
+		result += (vec.perActionCards < .001) ? 0 : perActionCards(state);
+		result += (vec.perCopper < .001) ? 0 : perCopper(state);
+		result += (vec.invPerActionCards < .001) ? 0 : invPerActionCards(state);
+		result += (vec.percentMoney < .001) ? 0 : percentMoney(state);
+		result += (vec.cardsCosting4 < .001) ? 0 : cardsCosting4(state);
+		result += (vec.alwaysOne < .001) ? 0 : alwaysOne(state);
+		result += (vec.invMoneyDistribution < .001) ? 0 : invMoneyDistribution(state);
 		
 		return result;
 		
@@ -39,6 +51,9 @@ public class AttributeVectorEvaluator {
            
            return 1- turns/estimatedTurns;
    }
+	public static float invPercentageLeft(GameState state){
+		   return 1-percentageLeft(state);
+	}
    
    public static float minTurnsRequiredToEnd (GameState state) {
            boolean canEndInOne = false;
@@ -99,15 +114,43 @@ public class AttributeVectorEvaluator {
        return unScaledTotal/total;
    }
    public static float percentVictoryCards(GameState state) {
-		   Player player = state.currentPlayer;
-	       Deck playerCards = player.allCards();
-	       int numVictory = 0;
-	       for (int i = 0; i < playerCards.size(); i++) {
-	    	   if (playerCards.getCardAt(i).type == CardType.Victory) {
-	    		   ++numVictory;
-	    	   }
-	       }
-	       return ((float)numVictory)/playerCards.size();
+	   Player player = state.currentPlayer;
+       Deck playerCards = player.allCards();
+       int numVictory = 0;
+       for (int i = 0; i < playerCards.size(); i++) {
+    	   if (playerCards.getCardAt(i).type == CardType.Victory) {
+    		   ++numVictory;
+    	   }
+       }
+       return ((float)numVictory)/playerCards.size();
+   }
+   public static float percentMoney(GameState state) {
+	   Player player = state.currentPlayer;
+       Deck playerCards = player.allCards();
+       int numVictory = 0;
+       for (int i = 0; i < playerCards.size(); i++) {
+    	   if (playerCards.getCardAt(i).type == CardType.Money) {
+    		   ++numVictory;
+    	   }
+       }
+       return ((float)numVictory)/playerCards.size();
+   }
+   public static float perActionCards(GameState state) {
+	   Player player = state.currentPlayer;
+       Deck playerCards = player.allCards();
+       int numAction = 0;
+       for (int i = 0; i < playerCards.size(); i++) {
+    	   if (playerCards.getCardAt(i).type == CardType.Action) {
+    		   ++numAction;
+    	   }
+       }
+       return ((float)numAction)/playerCards.size();
+   }
+   public static float invPerActionCards(GameState state){
+	   return 1-percentageLeft(state);
+}
+   public static float invPercentVictoryCards(GameState state){
+	   return 1-invPercentVictoryCards(state);
    }
    public static float expNumBuys(GameState state) {
 	   Player player = state.currentPlayer;
@@ -151,6 +194,17 @@ public class AttributeVectorEvaluator {
     	   }
        }
        return ((float)numDuchy)/playerCards.size();
+   }
+   public static float perCopper(GameState state) {
+	   Player player = state.currentPlayer;
+       Deck playerCards = player.allCards();
+       int numCopper = 0;
+       for (int i = 0; i < playerCards.size(); i++) {
+    	   if (playerCards.getCardAt(i) instanceof Copper) {
+    		   ++numCopper;
+    	   }
+       }
+       return ((float)numCopper)/playerCards.size();
    }
    public static float perProvince(GameState state) {
 	   Player player = state.currentPlayer;
@@ -218,6 +272,9 @@ public class AttributeVectorEvaluator {
 	   }
 	   return expValueTotal/players.size();
    }
+   public static float invExpValueEnemyDecks(GameState state){
+	   return 1-invExpValueEnemyDecks(state);
+   }
    public static float expValueCosting5(GameState state) {
        float maxExpValue = 0;
        for (Deck deck : state.buyOptions) {
@@ -244,6 +301,19 @@ public class AttributeVectorEvaluator {
     	   }
        }
        return cardsCosting5;
+   }
+   public static float cardsCosting4(GameState state) {
+	   float cardsCosting4 = 0;
+       for (Deck deck : state.buyOptions) {
+    	   if (deck.size() == 0) {
+    		   continue;
+    	   }
+    	   Card card = deck.getCardAt(0);
+    	   if (card.cost == 4) {
+    		   ++cardsCosting4;
+    	   }
+       }
+       return cardsCosting4;
    }
    public static float cursesRemaining(GameState state) {
 	   float curses = 0;
@@ -281,14 +351,26 @@ public class AttributeVectorEvaluator {
 	   float result = expWitches/players.size();
 	   return result;
    }
-   //Returns 0 when you have only estates
+ //Returns 0 when you have only estates
    //Returns 1 when you have only Provinces
-   public static float victoryEfficency(GameState state){
+   public static float victoryEfficiency(GameState state){
 	   Deck playerCards = state.currentPlayer.allCards();
 	   Deck victoryCards = playerCards.makeSubDeck(CardType.Victory);
 	   if(victoryCards.size() == 0)
 		   return 0;
 	   return ((victoryCards.totalVictory()*1f/victoryCards.size()) - 1)/5;
+   }
+ //Returns 0 when you have only copper
+   //Returns 1 when you have only gold
+   public static float moneyDistribution(GameState state){
+	   Deck playerCards = state.currentPlayer.allCards();
+	   Deck moneyCards = playerCards.makeSubDeck(CardType.Money);
+	   if(moneyCards.size() == 0)
+		   return 0;
+	   return ((moneyCards.totalMoney()*1f/moneyCards.size()) - 1)/2;
+   }
+   public static float invMoneyDistribution(GameState state){
+	   return 1-moneyDisribution(state);
    }
    //I'm going to change this. 0 means we're losing badly. 1 means we're winning well. 0.5 means a tie
    public static float currentlyWinning(GameState state) {
@@ -312,5 +394,8 @@ public class AttributeVectorEvaluator {
 	   if(inLeadBy<-18)
 		   inLeadBy = -18;
 	   return (float) (inLeadBy/36f + 0.5);
+   }
+   public static float alwaysOne(GameState state) {
+	   return 1f;//What else were you expecting?
    }
 }
