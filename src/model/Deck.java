@@ -57,7 +57,7 @@ public class Deck {
 	}
 	public void mergeCopy(Deck d){
 		for (int i = 0; i < d.size(); i++){
-			theStack.add(d.getCardAt(0));
+			theStack.add(d.getCardAt(i));
 		}
 	}
 	public void mergeShuffle(Deck d){
@@ -118,6 +118,21 @@ public class Deck {
 				r.add(c);
 		}
 		return r;
+	}
+	public Deck getFreeActions(){
+		Deck actionCards = makeSubDeck(CardType.Action);
+		Deck returnDeck = new Deck();
+		for(int i=0;i<theStack.size();i++){
+			ActionCard a = (ActionCard)actionCards.getCardAt(i);
+			if(		a.identity == ActionCardTypes.Cellar ||
+					a.identity == ActionCardTypes.Festival ||
+					a.identity == ActionCardTypes.Labratory ||
+					a.identity == ActionCardTypes.Market ||
+					a.identity == ActionCardTypes.Village){
+				returnDeck.add(a);
+			}
+		}
+		return returnDeck;
 	}
 	public Card findCard(Class c){
 		for(int i=0;i<theStack.size();i++){

@@ -1,7 +1,7 @@
 package model;
 
 public class AIPlayer extends Player{
-	
+	public static int i=0;
 	//TODO fix so that it handles chapels and cellars
 	Personality personality;
 	public AIPlayer(String s, Personality personality) throws InstantiationException,
@@ -10,13 +10,20 @@ public class AIPlayer extends Player{
 		this.personality = personality;
 	}
 	public void playRound(GameState state) {
+		i=0;
 		numActions = 1;
 		totalWorth = 0;
 		totalBuys = 1;
 		Card selectedCard;
-		while(hand.totalOfType(CardType.Action) != 0){
-			selectedCard = selectCard(hand, state);
-			ActionHandler.handleActionCard(state, state.currentPlayer, (ActionCard)selectedCard);
+		while(hand.totalOfType(CardType.Action) != 0 && numActions > 0){
+			selectedCard = selectCard(hand,CardType.Action, state);
+			if(selectedCard instanceof BlankCard)
+				numActions = 0;
+			else{
+				state.inPlay.add(hand.remove(selectedCard));
+				ActionHandler.handleActionCard(state, state.currentPlayer, (ActionCard)selectedCard);
+				numActions--;
+			}
 		}
 		//This worth value is wrong
 		//I think this is fixed
@@ -28,12 +35,13 @@ public class AIPlayer extends Player{
 
 	@Override
 	public Card selectBuy(GameState state) {
-		//TODO extra protection against buying copper.
+		i++;
+		System.out.println(name+" is deciding what to buy....");
 		float bestValue = 0;
 		Card bestCard = null;
 		int costAtLeast = totalWorth;
 		Deck canBuy;
-		while (costAtLeast > 0 && bestCard == null) {
+		while (costAtLeast >= 0 && bestCard == null) {
 			canBuy = new Deck();
 			for (Deck deck : state.buyOptions) {
 				if (deck.getCardAt(0).cost == costAtLeast) {
@@ -51,11 +59,19 @@ public class AIPlayer extends Player{
 			}
 			costAtLeast--;
 		}
+		if(bestCard instanceof Copper)
+			return new BlankCard();
 		System.out.println(this + " just bought a " + bestCard);
 		return bestCard;
 	}
 	public Card selectCard(Deck d, GameState state) {
+		System.out.println(name+" is deciding what action card to play....");
 		float bestValue = 0;
+		Deck freeActionCards = d.getFreeActions();
+		if(!freeActionCards.isEmpty()){
+			System.out.println(this + " plays a " + freeActionCards.getCardAt(0));
+			return freeActionCards.getCardAt(0);
+		}
 		Card bestCard = new BlankCard();
 		for(int i=0;i<d.size();i++){
 			Card currentCard = d.getCardAt(i);

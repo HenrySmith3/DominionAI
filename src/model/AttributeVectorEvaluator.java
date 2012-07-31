@@ -15,35 +15,36 @@ public class AttributeVectorEvaluator {
 					((ActionCard)c).identity == ActionCardTypes.Village);
 		//we can't use == because we're comparing floats.
 		//if it's less than .001, it's zero.
-		result += (vec.percentageLeft < .001) ? 0 : percentageLeft(state);
-		result += (vec.minTurnsRequiredToEnd < .001) ? 0 : minTurnsRequiredToEnd(state);
-		result += (vec.expMoneyInHand < .001) ? 0 : expMoneyInHand(state,p);
-		result += (vec.percentVictoryCards < .001) ? 0 : percentVictoryCards(state,p);
-		result += (vec.expNumBuys < .001) ? 0 : expNumBuys(state,p);
-		result += (vec.perEstate < .001) ? 0 : perEstate(state,p);
-		result += (vec.perDuchy < .001) ? 0 : perDuchy(state,p);
-		result += (vec.perProvince < .001) ? 0 : perProvince(state,p);
-		result += (vec.expValueNextCard < .001) ? 0 : expValueNextCard(state,p,p.drawPile, givesAction);
-		result += (vec.expValueDiscard < .001) ? 0 : expValueDiscard(state,p);
-		result += (vec.expValueHand < .001) ? 0 : expValueHand(state,p);
-		result += (vec.expValueEnemyDecks < .001) ? 0 : expValueEnemyDecks(state,p);
-		result += (vec.expValueCosting5 < .001) ? 0 : expValueCosting5(state,p);
-		result += (vec.cardsCosting5 < .001) ? 0 : cardsCosting5(state);
-		result += (vec.cursesRemaining < .001) ? 0 : cursesRemaining(state);
-		result += (vec.expEnemiesDrawingWitches < .001) ? 0 : expEnemiesDrawingWitches(state);
-		result += (vec.currentlyWinning < .001) ? 0 : currentlyWinning(state,p);
-		result += (vec.moneyDistribution < .001) ? 0 : moneyDistribution(state,p);
-		result += (vec.invPercentageLeft < .001) ? 0 : invPercentageLeft(state);
-		result += (vec.victoryEfficiency < .001) ? 0 : victoryEfficiency(state,p);
-		result += (vec.invExpValueEnemyDecks < .001) ? 0 : invExpValueEnemyDecks(state,p);
-		result += (vec.invPercentVictoryCards < .001) ? 0 : invPercentVictoryCards(state,p);
-		result += (vec.perActionCards < .001) ? 0 : perActionCards(state,p);
-		result += (vec.perCopper < .001) ? 0 : perCopper(state,p);
-		result += (vec.invPerActionCards < .001) ? 0 : invPerActionCards(state,p);
-		result += (vec.percentMoney < .001) ? 0 : percentMoney(state,p);
-		result += (vec.cardsCosting4 < .001) ? 0 : cardsCosting4(state);
-		result += (vec.alwaysOne < .001) ? 0 : alwaysOne(state);
-		result += (vec.invMoneyDistribution < .001) ? 0 : invMoneyDistribution(state,p);
+		//Bro we never multiply by the appropriate attribute hueristic
+		result += (vec.percentageLeft < .001) ? 0 : percentageLeft(state)*vec.percentageLeft;
+		result += (vec.minTurnsRequiredToEnd < .001) ? 0 : minTurnsRequiredToEnd(state)*vec.minTurnsRequiredToEnd;
+		result += (vec.expMoneyInHand < .001) ? 0 : expMoneyInHand(state,p)*vec.expMoneyInHand;
+		result += (vec.percentVictoryCards < .001) ? 0 : percentVictoryCards(state,p)*vec.percentVictoryCards;
+		result += (vec.expNumBuys < .001) ? 0 : expNumBuys(state,p)*vec.expNumBuys;
+		result += (vec.perEstate < .001) ? 0 : perEstate(state,p)*vec.perEstate;
+		result += (vec.perDuchy < .001) ? 0 : perDuchy(state,p)*vec.perDuchy;
+		result += (vec.perProvince < .001) ? 0 : perProvince(state,p)*vec.perProvince;
+		result += (vec.expValueNextCard < .001) ? 0 : expValueNextCard(state,p,p.drawPile, givesAction)*vec.expValueNextCard;
+		result += (vec.expValueDiscard < .001) ? 0 : expValueDiscard(state,p)*vec.expValueDiscard;
+		result += (vec.expValueHand < .001) ? 0 : expValueHand(state,p)*vec.expValueHand;
+		result += (vec.expValueEnemyDecks < .001) ? 0 : expValueEnemyDecks(state,p)*vec.expValueEnemyDecks;
+		result += (vec.expValueCosting5 < .001) ? 0 : expValueCosting5(state,p)*vec.expValueCosting5;
+		result += (vec.cardsCosting5 < .001) ? 0 : cardsCosting5(state)*vec.cardsCosting5;
+		result += (vec.cursesRemaining < .001) ? 0 : cursesRemaining(state)*vec.cursesRemaining;
+		result += (vec.expEnemiesDrawingWitches < .001) ? 0 : expEnemiesDrawingWitches(state)*vec.expEnemiesDrawingWitches;
+		result += (vec.currentlyWinning < .001) ? 0 : currentlyWinning(state,p)*vec.currentlyWinning;
+		result += (vec.moneyDistribution < .001) ? 0 : moneyDistribution(state,p)*vec.moneyDistribution;
+		result += (vec.invPercentageLeft < .001) ? 0 : invPercentageLeft(state)*vec.invPercentageLeft;
+		result += (vec.victoryEfficiency < .001) ? 0 : victoryEfficiency(state,p)*vec.victoryEfficiency;
+		result += (vec.invExpValueEnemyDecks < .001) ? 0 : invExpValueEnemyDecks(state,p)*vec.invExpValueEnemyDecks;
+		result += (vec.invPercentVictoryCards < .001) ? 0 : invPercentVictoryCards(state,p)*vec.invPercentVictoryCards;
+		result += (vec.perActionCards < .001) ? 0 : perActionCards(state,p)*vec.perActionCards;
+		result += (vec.perCopper < .001) ? 0 : perCopper(state,p)*vec.perCopper;
+		result += (vec.invPerActionCards < .001) ? 0 : invPerActionCards(state,p)*vec.perActionCards;
+		result += (vec.percentMoney < .001) ? 0 : percentMoney(state,p)*vec.percentMoney;
+		result += (vec.cardsCosting4 < .001) ? 0 : cardsCosting4(state)*vec.cardsCosting4;
+		result += (vec.alwaysOne < .001) ? 0 : alwaysOne(state)*vec.alwaysOne;
+		result += (vec.invMoneyDistribution < .001) ? 0 : invMoneyDistribution(state,p)*vec.invMoneyDistribution;
 		
 		return result;
 		
@@ -103,24 +104,16 @@ public class AttributeVectorEvaluator {
            return expectedForDraw; //Way overestimates your moneydraws, but is not a recursive call
    }
    public static float percentVictoryCards(GameState state,Player player) {
-       Deck playerCards = player.allCards();
-       int numVictory = 0;
-       for (int i = 0; i < playerCards.size(); i++) {
-    	   if (playerCards.getCardAt(i).type == CardType.Victory) {
-    		   ++numVictory;
-    	   }
-       }
-       return ((float)numVictory)/playerCards.size();
+	   Deck playerCards = player.allCards();
+       Deck victoryCards = playerCards.makeSubDeck(CardType.Victory);
+       
+       return ((float)victoryCards.size())/playerCards.size();
    }
    public static float percentMoney(GameState state,Player player) {
        Deck playerCards = player.allCards();
-       int numVictory = 0;
-       for (int i = 0; i < playerCards.size(); i++) {
-    	   if (playerCards.getCardAt(i).type == CardType.Money) {
-    		   ++numVictory;
-    	   }
-       }
-       return ((float)numVictory)/playerCards.size();
+       Deck moneyCards = playerCards.makeSubDeck(CardType.Money);
+       
+       return ((float)moneyCards.size())/playerCards.size();
    }
    public static float perActionCards(GameState state,Player player) {
        Deck playerCards = player.allCards();
@@ -325,7 +318,9 @@ public class AttributeVectorEvaluator {
     		   ++cardsCosting5;
     	   }
        }
-       return cardsCosting5;
+       if(cardsCosting5/5>=1)
+    	   return 1;
+       return cardsCosting5/5;
    }
    public static float cardsCosting4(GameState state) {
 	   float cardsCosting4 = 0;
@@ -338,7 +333,9 @@ public class AttributeVectorEvaluator {
     		   ++cardsCosting4;
     	   }
        }
-       return cardsCosting4;
+       if(cardsCosting4/5>=1)
+    	   return 1;
+       return cardsCosting4/5; //Probably not gonna go out of bounds
    }
    public static float cursesRemaining(GameState state) {
 	   float curses = 0;

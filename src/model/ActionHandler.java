@@ -62,7 +62,6 @@ public class ActionHandler {
 				temp = curPlayer.selectBuy(5, state);
 				curPlayer.discard.add(temp);
 				state.inPlay.remove(card);
-				curPlayer.totalBuys += 1; //To offset the free buy
 				break;
 			case Festival:
 				curPlayer.numActions += 2;
@@ -116,7 +115,6 @@ public class ActionHandler {
 			case Workshop:
 				temp = curPlayer.selectBuy(4, state);
 				curPlayer.hand.add(temp);
-				curPlayer.totalBuys += 1; //To offset the free buy
 				break;
 		}
 	}

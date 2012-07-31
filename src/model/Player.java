@@ -57,10 +57,15 @@ public abstract class Player {
 	}
 	
 	public Card buyCard(Card c,GameState state){
-		if(c instanceof BlankCard || c.cost > totalWorth)
+		if(c.cost > totalWorth)
 			return null;
+		if(c instanceof BlankCard){
+			totalBuys = 0;
+			return null;
+		}
 		discard.add(c);
 		totalWorth -= c.cost;
+		totalBuys--;
 		state.bought(c);
 		return c;
 	}
