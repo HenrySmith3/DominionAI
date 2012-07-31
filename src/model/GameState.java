@@ -22,7 +22,7 @@ public class GameState {
 	public BufferedReader b;
 	public int numOfPlayers;
 	public int numTurns = 0;
-	public GameState(int computerPlayers, int humanPlayers,String actionDecksForGame) throws InstantiationException, IllegalAccessException{
+	public GameState(int humanPlayers,int computerPlayers,String actionDecksForGame) throws InstantiationException, IllegalAccessException{
 		this.numOfPlayers = computerPlayers + humanPlayers;
 		b = new BufferedReader(new InputStreamReader(System.in));		
 		for(int i=0;i<humanPlayers;i++){

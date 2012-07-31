@@ -7,12 +7,12 @@ public class AttributeVectorEvaluator {
 	public static float EvaluateVector(AttributeVector vec, GameState state,Player p,Card c) {
 		float result = 0;
 		boolean givesAction = c.type == CardType.Action;
-		givesAction = givesAction &&
-					((ActionCard)c).identity == ActionCardTypes.Cellar ||
+		givesAction = givesAction && 
+					(((ActionCard)c).identity == ActionCardTypes.Cellar ||
 					((ActionCard)c).identity == ActionCardTypes.Festival ||
 					((ActionCard)c).identity == ActionCardTypes.Labratory ||
 					((ActionCard)c).identity == ActionCardTypes.Market ||
-					((ActionCard)c).identity == ActionCardTypes.Village;
+					((ActionCard)c).identity == ActionCardTypes.Village);
 		//we can't use == because we're comparing floats.
 		//if it's less than .001, it's zero.
 		result += (vec.percentageLeft < .001) ? 0 : percentageLeft(state);

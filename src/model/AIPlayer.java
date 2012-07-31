@@ -30,10 +30,10 @@ public class AIPlayer extends Player{
 	public Card selectBuy(GameState state) {
 		//TODO extra protection against buying copper.
 		float bestValue = 0;
-		Card bestCard = new BlankCard();
+		Card bestCard = null;
 		int costAtLeast = totalWorth;
 		Deck canBuy;
-		while (costAtLeast >= 0) {
+		while (costAtLeast > 0 && bestCard == null) {
 			canBuy = new Deck();
 			for (Deck deck : state.buyOptions) {
 				if (deck.getCardAt(0).cost == costAtLeast) {
