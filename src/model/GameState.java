@@ -120,6 +120,7 @@ public class GameState {
 				break;
 			}
 		}
+		d.removeCardAt(0);
 		if(d.isEmpty()){
 			buyOptions.remove(d);
 		}

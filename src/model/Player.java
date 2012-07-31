@@ -57,7 +57,7 @@ public abstract class Player {
 	}
 	
 	public Card buyCard(Card c,GameState state){
-		if(c.cost > totalWorth)
+		if(c instanceof BlankCard || c.cost > totalWorth)
 			return null;
 		discard.add(c);
 		totalWorth -= c.cost;

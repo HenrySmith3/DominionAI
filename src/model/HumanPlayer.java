@@ -57,6 +57,7 @@ public class HumanPlayer extends Player {
 		Card c = null;
 		while(totalBuys > 0 && !(selectedCardGUI instanceof BlankCard)){
 			c = selectBuy(state);
+			buyCard(c,state);
 		}
 	}
 }

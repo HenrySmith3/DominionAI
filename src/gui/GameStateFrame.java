@@ -195,7 +195,7 @@ public class GameStateFrame extends JFrame implements ActionListener{
 					e1.printStackTrace();
 				}
 			}
-			game.currentPlayer.selectedCardGUI = game.currentPlayer.buyCard(d);
+			game.currentPlayer.selectedCardGUI = d.getCardAt(0);
 			game.currentPlayer.notify();
 			dispose();
 		}
