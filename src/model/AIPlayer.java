@@ -78,13 +78,38 @@ public class AIPlayer extends Player{
 	}
 	public Card selectCard(Deck d, CardType t, GameState state,String message) {
 		if(message.equalsIgnoreCase("Celler")){
-			
+			Deck victories = d.makeSubDeck(CardType.Victory);
+			if(!victories.isEmpty()){
+				return victories.getCardAt(0);
+			}
+			return new BlankCard();
 		}
 		else if(message.equalsIgnoreCase("Chapel")){
-			
+			Card temp = d.findCard(Curse.class);
+			if(temp != null)
+				return temp;
+			temp = d.findCard(Estate.class);
+			if(temp != null && AttributeVectorEvaluator.invPercentageLeft(state)< 0.2)
+				return temp;
+			temp = d.findCard(Copper.class);
+			if(temp != null && AttributeVectorEvaluator.moneyDistribution(state, this) > 0.3)
+				return temp;
+			return new BlankCard();
 		}
 		else if(message.equalsIgnoreCase("Mine")){
-			
+			Deck monies = d.makeSubDeck(CardType.Money);
+			Card copperHoldOn = null;
+			for(int i=0;i<monies.size();i++){
+				Card c = monies.getCardAt(i);
+				if(c instanceof Silver)
+					return c;
+				else if(c instanceof Copper)
+					copperHoldOn = c;
+			}
+			if(copperHoldOn == null)
+				return new BlankCard();
+			else
+				return copperHoldOn;
 		}
 		return selectCard(d,state);
 	}

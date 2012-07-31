@@ -20,7 +20,7 @@ public class ActionHandler {
 				break;
 			case Cellar:
 				while(curPlayer.hand.size() != 0 && !(temp instanceof BlankCard)){
-					temp = curPlayer.selectCard(curPlayer.hand,null, state);
+					temp = curPlayer.selectCard(curPlayer.hand,null,state,"Celler");
 					if(!(temp instanceof BlankCard)){
 						curPlayer.hand.remove(temp);
 						curPlayer.discard.add(temp);
@@ -42,8 +42,11 @@ public class ActionHandler {
 				break;
 			case Chapel:
 				while(i != 4 && temp != null){
-					temp = curPlayer.hand.remove(curPlayer.selectCard(curPlayer.hand, null, state));
-					i++;
+					temp = curPlayer.selectCard(curPlayer.hand, null, state,"Chapel");
+					if(!(temp instanceof BlankCard)){
+						temp = curPlayer.hand.remove(temp);
+						i++;
+					}
 				}
 				HumanPlayer.selectedCardGUI = card;//Shitty programming here
 				break;
@@ -82,7 +85,7 @@ public class ActionHandler {
 				break;
 			case Mine: //Not technically Right
 				System.out.println("Select A Treasure for improving");
-				temp = curPlayer.hand.remove(curPlayer.selectCard(curPlayer.hand,CardType.Money, state));
+				temp = curPlayer.hand.remove(curPlayer.selectCard(curPlayer.hand,CardType.Money,state,"Mine"));
 				if(temp.getClass().equals(Copper.class))
 					curPlayer.hand.add(state.silvers.removeCardAt(0));
 				if(temp.getClass().equals(Silver.class) || temp.getClass().equals(Gold.class))

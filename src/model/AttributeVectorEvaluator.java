@@ -32,7 +32,7 @@ public class AttributeVectorEvaluator {
 		result += (vec.cursesRemaining < .001) ? 0 : cursesRemaining(state);
 		result += (vec.expEnemiesDrawingWitches < .001) ? 0 : expEnemiesDrawingWitches(state);
 		result += (vec.currentlyWinning < .001) ? 0 : currentlyWinning(state,p);
-		result += (vec.moneyDistribution < .001) ? 0 : moneyDisribution(state,p);
+		result += (vec.moneyDistribution < .001) ? 0 : moneyDistribution(state,p);
 		result += (vec.invPercentageLeft < .001) ? 0 : invPercentageLeft(state);
 		result += (vec.victoryEfficiency < .001) ? 0 : victoryEfficiency(state,p);
 		result += (vec.invExpValueEnemyDecks < .001) ? 0 : invExpValueEnemyDecks(state,p);
@@ -101,21 +101,6 @@ public class AttributeVectorEvaluator {
            float percentageGold = moneyCards.totalOfCard(Gold.class)*1f/moneyCards.size();
            float expectedForDraw = percentageCopper*0.33f + percentageSilver*0.66f + percentageGold; //Hard coded money values
            return expectedForDraw; //Way overestimates your moneydraws, but is not a recursive call
-   }
-   public static float moneyDisribution(GameState state,Player player){
-       Deck playerCards = player.allCards();
-       Deck moneyCards = playerCards.makeSubDeck(CardType.Money);
-       int total = 0;
-       float unScaledTotal = 0;
-       for(int i=0;i<moneyCards.size();i++){
-    	   Card c = moneyCards.getCardAt(i);
-    	   if(c.getClass() == Silver.class)
-    		   unScaledTotal += 0.5;
-    	   else if(c.getClass() == Gold.class)
-    		   unScaledTotal += 1;
-    	   total++;
-       }
-       return unScaledTotal/total;
    }
    public static float percentVictoryCards(GameState state,Player player) {
        Deck playerCards = player.allCards();
@@ -400,17 +385,23 @@ public class AttributeVectorEvaluator {
 		   return 0;
 	   return ((victoryCards.totalVictory()*1f/victoryCards.size()) - 1)/5;
    }
- //Returns 0 when you have only copper
-   //Returns 1 when you have only gold
    public static float moneyDistribution(GameState state,Player player){
-	   Deck playerCards = state.currentPlayer.allCards();
-	   Deck moneyCards = playerCards.makeSubDeck(CardType.Money);
-	   if(moneyCards.size() == 0)
-		   return 0;
-	   return ((moneyCards.totalMoney()*1f/moneyCards.size()) - 1)/2;
+       Deck playerCards = player.allCards();
+       Deck moneyCards = playerCards.makeSubDeck(CardType.Money);
+       int total = 0;
+       float unScaledTotal = 0;
+       for(int i=0;i<moneyCards.size();i++){
+    	   Card c = moneyCards.getCardAt(i);
+    	   if(c.getClass() == Silver.class)
+    		   unScaledTotal += 0.5;
+    	   else if(c.getClass() == Gold.class)
+    		   unScaledTotal += 1;
+    	   total++;
+       }
+       return unScaledTotal/total;
    }
    public static float invMoneyDistribution(GameState state,Player player){
-	   return 1-moneyDisribution(state,player);
+	   return 1-moneyDistribution(state,player);
    }
    //I'm going to change this. 0 means we're losing badly. 1 means we're winning well. 0.5 means a tie
    public static float currentlyWinning(GameState state,Player player) {

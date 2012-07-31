@@ -119,6 +119,13 @@ public class Deck {
 		}
 		return r;
 	}
+	public Card findCard(Class c){
+		for(int i=0;i<theStack.size();i++){
+			if(c == theStack.get(i).getClass())
+				return theStack.get(i);
+		}
+		return null;
+	}
 	public String printDeck(){
 		String s = "";
 		for(int i=0;i<theStack.size();i++){

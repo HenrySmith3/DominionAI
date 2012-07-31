@@ -24,14 +24,14 @@ public class GameState {
 	public int numTurns = 0;
 	public GameState(int computerPlayers, int humanPlayers,String actionDecksForGame) throws InstantiationException, IllegalAccessException{
 		this.numOfPlayers = computerPlayers + humanPlayers;
-		b = new BufferedReader(new InputStreamReader(System.in));
-		for(int i=0;i<computerPlayers;i++){
-			Player p = new AIPlayer("Computer"+Integer.toString(i), new DefaultPersonality());//CHANGE THIS TO COMPUTERPLAYER WHEN IT EXISTS
+		b = new BufferedReader(new InputStreamReader(System.in));		
+		for(int i=0;i<humanPlayers;i++){
+			Player p = new HumanPlayer("Human"+Integer.toString(i));
 			p.newHand();
 			players.add(p);
 		}
-		for(int i=0;i<humanPlayers;i++){
-			Player p = new HumanPlayer("Human"+Integer.toString(i));
+		for(int i=0;i<computerPlayers;i++){
+			Player p = new AIPlayer("Computer"+Integer.toString(i), new DefaultPersonality());//CHANGE THIS TO COMPUTERPLAYER WHEN IT EXISTS
 			p.newHand();
 			players.add(p);
 		}
@@ -120,6 +120,7 @@ public class GameState {
 				break;
 			}
 		}
+		d.removeCardAt(0);
 		if(d.isEmpty()){
 			buyOptions.remove(d);
 		}
